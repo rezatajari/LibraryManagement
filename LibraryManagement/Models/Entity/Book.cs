@@ -12,6 +12,10 @@ namespace LibraryManagement.Models.Entity
 
         public string Year { get; set; }
 
+        public string Price { get; set; }
+
+        public string Description { get; set; }
+
         public Author Author { get; set; }
 
         [ForeignKey("Author")]
