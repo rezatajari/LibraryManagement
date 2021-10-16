@@ -5,11 +5,11 @@ VisualStudioVersion = 16.0.31112.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraryManagement.Web", "LibraryManagement\LibraryManagement.Web.csproj", "{D90A4AFA-7991-43FD-B5C6-965774137D2D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryManagement.Domin", "LibraryManagement.Domin\LibraryManagement.Domin.csproj", "{309ED197-E705-4F42-8086-5F0C7CD3D272}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraryManagement.Entities", "LibraryManagement.Domin\LibraryManagement.Entities.csproj", "{309ED197-E705-4F42-8086-5F0C7CD3D272}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryManagement.Service", "LibraryManagement.Servic\LibraryManagement.Service.csproj", "{287228BA-AA92-4397-A262-C704CBDF9BDE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraryManagement.Service", "LibraryManagement.Servic\LibraryManagement.Service.csproj", "{287228BA-AA92-4397-A262-C704CBDF9BDE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryManagement.Infrastructure", "LibraryManagement.Infrastructure\LibraryManagement.Infrastructure.csproj", "{8EEC7DC1-5FC6-437B-9D1C-8712BA1E762C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraryManagement.DataAccessLayer", "LibraryManagement.Infrastructure\LibraryManagement.DataAccessLayer.csproj", "{8EEC7DC1-5FC6-437B-9D1C-8712BA1E762C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

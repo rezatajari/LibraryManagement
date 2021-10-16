@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace LibraryManagement.Models.Entity
+namespace LibraryManagement.Entity
 {
     public class Author
     {
