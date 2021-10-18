@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace LibraryManagement.Entity
+namespace LibraryManagement.Entities
 {
     public class Author
     {
@@ -9,6 +10,8 @@ namespace LibraryManagement.Entity
         public int Id { get; set; }
 
         public string Name { get; set; }
+
+        public int Age { get; set; }
 
         public ICollection<Book> Books { get; set; }
     }

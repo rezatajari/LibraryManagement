@@ -1,4 +1,4 @@
-﻿using LibraryManagement.Models.Entity;
+﻿using LibraryManagement.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,15 +8,16 @@ using System.Threading.Tasks;
 
 namespace LibraryManagement.DataAccessLayer
 {
-    public class LibraryDatabase: DbContext
+    public class LibraryDatabase : DbContext
     {
         public LibraryDatabase(DbContextOptions<LibraryDatabase> opt)
-      : base(opt)
+            : base(opt)
         {
+
         }
 
         public DbSet<Book> Books { get; set; }
 
-        public DbSet<auth
+        public DbSet<Author> Authors { get; set; }
     }
 }
