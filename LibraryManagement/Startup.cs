@@ -1,4 +1,5 @@
 using LibraryManagement.DataAccessLayer;
+using LibraryManagement.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +29,8 @@ namespace LibraryManagement
 
             services.AddDbContext<LibraryDatabase>(
                 opt => opt.UseSqlServer(@"Server=DESKTOP-TF0M2OI;Database=LibraryDatabase;Trusted_Connection=True;"));
+
+            services.AddTransient<ILibraryService, LibraryService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,6 +56,7 @@ namespace LibraryManagement
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
         }
     }
 }
