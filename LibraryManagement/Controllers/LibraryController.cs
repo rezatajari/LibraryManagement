@@ -25,31 +25,31 @@ namespace LibraryManagement.Web.Controllers
             return View();
         }
 
-        [Route("Library/Add")]
+        [Route("Library/AddBook")]
         [HttpGet]
-        public IActionResult Add()
+        public IActionResult AddBook()
         {
             var newBook = new BookDto();
             return View(newBook);
         }
 
-        [Route("Library/Add")]
+        [Route("Library/AddBook")]
         [HttpPost]
-        public IActionResult Add(BookDto newBook)
+        public IActionResult AddBook(BookDto newBook)
         {
             return View();
         }
 
-        [Route("Library/Edit")]
+        [Route("Library/EditBook")]
         [HttpGet]
-        public IActionResult Edit()
+        public IActionResult EditBook()
         {
             return View();
         }
 
-        [Route("Library/Delete")]
+        [Route("Library/DeleteBook")]
         [HttpGet]
-        public IActionResult Delete()
+        public IActionResult DeleteBook()
         {
             return View();
         }

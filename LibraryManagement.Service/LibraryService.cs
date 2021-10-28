@@ -17,13 +17,13 @@ namespace LibraryManagement.Service
             _libraryDatabase = libraryDatabase;
         }
 
-        public async Task AddBook(Book newBook)
+        public async Task Add(Book newBook)
         {
             await _libraryDatabase.Books.AddAsync(newBook);
             _libraryDatabase.SaveChanges();
         }
 
-        public async Task DeleteBook(int bookId)
+        public async Task Delete(int bookId)
         {
             var book = _libraryDatabase.Books.SingleOrDefault(b => b.Id == bookId);
 

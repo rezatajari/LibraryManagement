@@ -9,8 +9,8 @@ namespace LibraryManagement.Service
 {
     public interface ILibraryService
     {
-        Task AddBook(Book newBook);
+        Task Add(Book newBook);
 
-        Task DeleteBook(int bookId);
+        Task Delete(int bookId);
     }
 }

@@ -1,12 +1,12 @@
 ﻿@model LibraryManagement.Web.Models.BookDto;
 @{
-    ViewData["Title"] = "Add";
+    ViewData["Title"] = "AddBook";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="row"><h2 class="float-right mt-4">اضافه کردن کتاب</h2></div>
 
-<form class="mt-3 w-50 center-block" method="post" asp-controller="Library" asp-action="Add">
+<form class="mt-3 w-50 center-block" method="post" asp-controller="Library" asp-action="AddBook">
     <div class="form-group">
         <label for="bookname" class="float-right">نام کتاب</label>
         <input type="text" class="form-control" id="bookname" asp-for="@Model.Name" placeholder="نام کتاب">
