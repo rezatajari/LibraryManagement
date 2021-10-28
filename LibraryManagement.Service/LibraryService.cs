@@ -1,5 +1,6 @@
 ﻿using LibraryManagement.DataAccessLayer;
 using LibraryManagement.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,11 @@ namespace LibraryManagement.Service
             _libraryDatabase.SaveChanges();
         }
 
+        public List<Book> GetBookList()
+        {
+            var bookList = _libraryDatabase.Books.Include(a => a.Author).ToList();
+            return bookList;
+        }
         public async Task Delete(int bookId)
         {
             var book = _libraryDatabase.Books.SingleOrDefault(b => b.Id == bookId);
@@ -31,5 +37,6 @@ namespace LibraryManagement.Service
             _libraryDatabase.Books.Remove(book);
             await _libraryDatabase.SaveChangesAsync();
         }
+
     }
 }

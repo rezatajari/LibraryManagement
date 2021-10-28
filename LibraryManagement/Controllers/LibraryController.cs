@@ -42,6 +42,8 @@ namespace LibraryManagement.Web.Controllers
             if (newBookDto == null)
                 throw new ArgumentNullException();
 
+            if (!ModelState.IsValid)
+                return View();
 
             var newAuthor = new Author()
             {
@@ -57,24 +59,41 @@ namespace LibraryManagement.Web.Controllers
             };
 
             _iLibraryService.Add(newBook);
+            TempData["AddBook"] = "کتاب با موفقیت ثبت شد";
 
-            return View();
+            return RedirectToAction("AddBook");
         }
 
-        [Route("Library/EditBook")]
+        [Route("Library/BookList")]
         [HttpGet]
-        public IActionResult EditBook()
+        public IActionResult BookList()
         {
-            return View();
+            var bookList = _iLibraryService.GetBookList();
+
+            if (bookList == null)
+                throw new ArgumentNullException();
+
+            var bookListDto = new List<BookListDto>();
+            foreach (var book in bookList)
+            {
+                bookListDto.Add(new BookListDto
+                {
+                    Book = book.Name,
+                    Author = book.Author.Name,
+                    Description = book.Description
+                });
+            }
+
+            return View(bookListDto);
         }
 
         [Route("Library/DeleteBook")]
-        [HttpGet]
-        public IActionResult DeleteBook()
+        [HttpDelete]
+        public IActionResult DeleteBook(string bookName, string authorName)
         {
-            return View();
-        }
 
+            return RedirectToAction("BookList");
+        }
 
     }
 }

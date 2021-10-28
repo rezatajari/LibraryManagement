@@ -1,0 +1,42 @@
+﻿@model List<LibraryManagement.Web.Models.ViewModelDto.BookListDto>
+@{
+    ViewData["Title"] = "BookList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
+        background-color: darkgray;
+    }
+</style>
+
+<div class="row"><h2 class="float-right mt-4">لیست کتاب ها</h2></div>
+
+
+<table class="table table-striped table-dark table-bordered text-center">
+    <thead>
+        <tr>
+            <th>نام کتاب</th>
+            <th>نام نویسنده</th>
+            <th>توضیحات</th>
+            <th>حذف کتاب</th>
+        </tr>
+    </thead>
+    @foreach (var book in Model)
+    {
+        <tr class="">
+            <td>
+                @book.Book
+            </td>
+            <td>
+                @book.Author
+            </td>
+            <td>
+                @book.Description
+            </td>
+            <td>
+                //TODO: درست کردن کلید حذف برای هر کتاب
+            </td>
+        </tr>
+    }
+</table>

@@ -11,7 +11,7 @@ namespace LibraryManagement.Entities
 
         public string Name { get; set; }
 
-        public int Age { get; set; }
+        public string Age { get; set; }
 
         public ICollection<Book> Books { get; set; }
     }

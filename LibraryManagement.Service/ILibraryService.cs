@@ -12,5 +12,6 @@ namespace LibraryManagement.Service
         Task Add(Book newBook);
 
         Task Delete(int bookId);
+       List<Book> GetBookList();
     }
 }
