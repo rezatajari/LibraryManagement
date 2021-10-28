@@ -1,4 +1,4 @@
-﻿@model LibraryManagement.Web.Models.BookDto;
+﻿@model LibraryManagement.Web.Models.ViewModelDto.AddBookDto;
 @{
     ViewData["Title"] = "AddBook";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -9,19 +9,23 @@
 <form class="mt-3 w-50 center-block" method="post" asp-controller="Library" asp-action="AddBook">
     <div class="form-group">
         <label for="bookname" class="float-right">نام کتاب</label>
-        <input type="text" class="form-control" id="bookname" asp-for="@Model.Name" placeholder="نام کتاب">
+        <input type="text" class="form-control" id="bookname" asp-for="@Model.BookName" placeholder="نام کتاب">
     </div>
     <div class="form-group">
         <label for="author" class="float-right">نام نویسنده</label>
-        <input type="text" class="form-control" id="author" asp-for="@Model.Author" placeholder="نام نویسنده">
+        <input type="text" class="form-control" id="author" asp-for="@Model.AuthorName" placeholder="نام نویسنده">
+    </div>
+    <div class="form-group">
+        <label for="authorage" class="float-right">سن نویسنده</label>
+        <input type="text" class="form-control" id="authorage" asp-for="@Model.AuthorAge" value="" placeholder="سن نویسنده">
     </div>
     <div class="form-group">
         <label for="price" class="float-right">قیمت کتاب</label>
-        <input type="text" class="form-control" id="price" asp-for="@Model.Price" placeholder="قیمت کتاب">
+        <input type="text" class="form-control" id="price" asp-for="@Model.BookPrice" placeholder="قیمت کتاب">
     </div>
     <div class="form-group">
         <label for="description" class="float-right">توضیحات</label>
-        <textarea class="form-control" id="description" rows="3" placeholder="توضیحات" asp-for="@Model.Description"></textarea>
+        <textarea class="form-control" id="description" rows="3" placeholder="توضیحات" asp-for="@Model.BookDescription"></textarea>
     </div>
     <button type="submit" class="btn btn-primary float-right">ثبت کتاب</button>
 </form>

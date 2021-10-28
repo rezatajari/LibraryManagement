@@ -1,5 +1,7 @@
-﻿using LibraryManagement.Service;
+﻿using LibraryManagement.Entities;
+using LibraryManagement.Service;
 using LibraryManagement.Web.Models;
+using LibraryManagement.Web.Models.ViewModelDto;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -29,14 +31,33 @@ namespace LibraryManagement.Web.Controllers
         [HttpGet]
         public IActionResult AddBook()
         {
-            var newBook = new BookDto();
-            return View(newBook);
+            var newBookDto = new AddBookDto();
+            return View(newBookDto);
         }
 
         [Route("Library/AddBook")]
         [HttpPost]
-        public IActionResult AddBook(BookDto newBook)
+        public IActionResult AddBook(AddBookDto newBookDto)
         {
+            if (newBookDto == null)
+                throw new ArgumentNullException();
+
+
+            var newAuthor = new Author()
+            {
+                Name = newBookDto.AuthorName,
+                Age = newBookDto.AuthorAge
+            };
+            var newBook = new Book
+            {
+                Name = newBookDto.BookName,
+                Price = newBookDto.BookPrice,
+                Description = newBookDto.BookDescription,
+                Author = newAuthor
+            };
+
+            _iLibraryService.Add(newBook);
+
             return View();
         }
 
