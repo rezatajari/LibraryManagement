@@ -24,8 +24,8 @@
     </thead>
     @foreach (var book in Model)
     {
-        <tr class="">
-            <td>
+        <tr>
+            <td class="bookname">
                 @book.Book
             </td>
             <td>
@@ -35,8 +35,15 @@
                 @book.Description
             </td>
             <td>
-                //TODO: درست کردن کلید حذف برای هر کتاب
+                <a class="text-danger btn btn-light" href="/Library/DeleteBook/@book.Id" >حذف کنید</a>
             </td>
         </tr>
     }
 </table>
+
+<div>
+    @if (TempData["DeleteBook"] != null)
+    {
+        <h3 class="text-center mt-3 text-danger">@TempData["DeleteBook"]</h3>
+    }
+</div>

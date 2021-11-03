@@ -78,6 +78,7 @@ namespace LibraryManagement.Web.Controllers
             {
                 bookListDto.Add(new BookListDto
                 {
+                    Id = book.Id,
                     Book = book.Name,
                     Author = book.Author.Name,
                     Description = book.Description
@@ -87,10 +88,13 @@ namespace LibraryManagement.Web.Controllers
             return View(bookListDto);
         }
 
-        [Route("Library/DeleteBook")]
-        [HttpDelete]
-        public IActionResult DeleteBook(string bookName, string authorName)
+        [Route("Library/DeleteBook/{Id}")]
+        [HttpGet]
+        public IActionResult DeleteBook(int Id)
         {
+
+            _iLibraryService.Delete(Id);
+            TempData["DeleteBook"] = "کتاب با موفقیت حذف شد";
 
             return RedirectToAction("BookList");
         }

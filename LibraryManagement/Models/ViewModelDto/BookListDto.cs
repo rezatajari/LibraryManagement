@@ -7,6 +7,8 @@ namespace LibraryManagement.Web.Models.ViewModelDto
 {
     public class BookListDto
     {
+        public int Id { get; set; }
+
         public string Book { get; set; }
 
         public string Author { get; set; }
