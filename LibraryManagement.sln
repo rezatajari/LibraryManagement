@@ -5,11 +5,13 @@ VisualStudioVersion = 16.0.31112.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraryManagement.Web", "LibraryManagement\LibraryManagement.Web.csproj", "{D90A4AFA-7991-43FD-B5C6-965774137D2D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryManagement.Entities", "LibraryManagement.Entities\LibraryManagement.Entities.csproj", "{5956D3F1-3E13-4292-A211-008FF3AADECD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraryManagement.Entities", "LibraryManagement.Entities\LibraryManagement.Entities.csproj", "{5956D3F1-3E13-4292-A211-008FF3AADECD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryManagement.Service", "LibraryManagement.Service\LibraryManagement.Service.csproj", "{ED5356C5-8BFB-4B1C-9FC6-F471EF492F9F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraryManagement.Service", "LibraryManagement.Service\LibraryManagement.Service.csproj", "{ED5356C5-8BFB-4B1C-9FC6-F471EF492F9F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryManagement.DataAccessLayer", "LibraryManagement.DataAccessLayer\LibraryManagement.DataAccessLayer.csproj", "{C7D88851-240C-4AA2-A4A4-1FBF0210FB68}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraryManagement.DataAccessLayer", "LibraryManagement.DataAccessLayer\LibraryManagement.DataAccessLayer.csproj", "{C7D88851-240C-4AA2-A4A4-1FBF0210FB68}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryManagement.DataTransferObjects", "LibraryManagement.DataTransferObjects\LibraryManagement.DataTransferObjects.csproj", "{281D3CF8-A181-4BBD-8A1C-8CD4C8459C84}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{C7D88851-240C-4AA2-A4A4-1FBF0210FB68}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C7D88851-240C-4AA2-A4A4-1FBF0210FB68}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C7D88851-240C-4AA2-A4A4-1FBF0210FB68}.Release|Any CPU.Build.0 = Release|Any CPU
+		{281D3CF8-A181-4BBD-8A1C-8CD4C8459C84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{281D3CF8-A181-4BBD-8A1C-8CD4C8459C84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{281D3CF8-A181-4BBD-8A1C-8CD4C8459C84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{281D3CF8-A181-4BBD-8A1C-8CD4C8459C84}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

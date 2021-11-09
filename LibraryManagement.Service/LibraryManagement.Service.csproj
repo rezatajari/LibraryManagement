@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LibraryManagement.DataAccessLayer\LibraryManagement.DataAccessLayer.csproj" />
+    <ProjectReference Include="..\LibraryManagement.DataTransferObjects\LibraryManagement.DataTransferObjects.csproj" />
   </ItemGroup>
 
 </Project>

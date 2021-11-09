@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LibraryManagement.DataAccessLayer\LibraryManagement.DataAccessLayer.csproj" />
+    <ProjectReference Include="..\LibraryManagement.DataTransferObjects\LibraryManagement.DataTransferObjects.csproj" />
     <ProjectReference Include="..\LibraryManagement.Service\LibraryManagement.Service.csproj" />
   </ItemGroup>
 

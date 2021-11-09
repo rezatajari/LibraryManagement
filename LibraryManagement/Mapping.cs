@@ -1,10 +1,6 @@
 ﻿using AutoMapper;
+using LibraryManagement.DataTransferObjects;
 using LibraryManagement.Entities;
-using LibraryManagement.Web.Models.ViewModelDto;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace LibraryManagement.Web
 {
@@ -25,6 +21,5 @@ namespace LibraryManagement.Web
                 .ForPath(des => des.Author.Name, opt => opt.MapFrom(src => src.AuthorName))
                 .ForPath(des => des.Author.Age, opt => opt.MapFrom(src => src.AuthorAge));
         }
-
     }
 }

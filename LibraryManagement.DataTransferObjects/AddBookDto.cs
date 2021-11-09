@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
-namespace LibraryManagement.Web.Models.ViewModelDto
+namespace LibraryManagement.DataTransferObjects
 {
     public class AddBookDto
     {
