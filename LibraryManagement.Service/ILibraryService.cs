@@ -1,4 +1,5 @@
-﻿using LibraryManagement.Entities;
+﻿using LibraryManagement.DataTransferObjects;
+using LibraryManagement.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -6,10 +7,10 @@ namespace LibraryManagement.Service
 {
     public interface ILibraryService
     {
-        Task Add(Book newBook);
+        Task Add(AddBookDto book);
 
         Task Delete(int bookId);
 
-        List<Book> GetBookList();
+        List<BookListDto> GetBookList();
     }
 }

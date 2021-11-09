@@ -12,12 +12,11 @@ namespace LibraryManagement.Web.Controllers
     public class LibraryController : Controller
     {
         private readonly ILibraryService _iLibraryService;
-        private readonly IMapper _mapper;
 
-        public LibraryController(ILibraryService ilibraryService, IMapper mapper)
+
+        public LibraryController(ILibraryService ilibraryService)
         {
             _iLibraryService = ilibraryService;
-            _mapper = mapper;
         }
 
         [Route("Library/Index")]
@@ -45,9 +44,7 @@ namespace LibraryManagement.Web.Controllers
             if (!ModelState.IsValid)
                 return View();
 
-            var newBook = _mapper.Map<Book>(newBookDto);
-
-            _iLibraryService.Add(newBook);
+            _iLibraryService.Add(newBookDto);
             TempData["AddBook"] = "کتاب با موفقیت ثبت شد";
 
             return RedirectToAction("AddBook");
@@ -59,16 +56,7 @@ namespace LibraryManagement.Web.Controllers
         {
             var bookList = _iLibraryService.GetBookList();
 
-            if (bookList == null)
-                throw new ArgumentNullException();
-
-            var bookListDto = new List<BookListDto>();
-            foreach (var book in bookList)
-            {
-                bookListDto.Add(_mapper.Map<BookListDto>(book));
-            }
-
-            return View(bookListDto);
+            return View(bookList);
         }
 
         [Route("Library/DeleteBook/{Id}")]
