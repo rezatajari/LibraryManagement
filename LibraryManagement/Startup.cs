@@ -31,6 +31,9 @@ namespace LibraryManagement
                 opt => opt.UseSqlServer(@"Server=DESKTOP-TF0M2OI;Database=LibraryDatabase;Trusted_Connection=True;"));
 
             services.AddTransient<ILibraryService, LibraryService>();
+
+            services.AddAutoMapper(typeof(Startup));
+            services.AddControllersWithViews();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

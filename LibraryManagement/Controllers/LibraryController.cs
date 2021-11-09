@@ -1,4 +1,5 @@
-﻿using LibraryManagement.Entities;
+﻿using AutoMapper;
+using LibraryManagement.Entities;
 using LibraryManagement.Service;
 using LibraryManagement.Web.Models;
 using LibraryManagement.Web.Models.ViewModelDto;
@@ -14,10 +15,12 @@ namespace LibraryManagement.Web.Controllers
     public class LibraryController : Controller
     {
         private readonly ILibraryService _iLibraryService;
+        private readonly IMapper _mapper;
 
-        public LibraryController(ILibraryService ilibraryService)
+        public LibraryController(ILibraryService ilibraryService, IMapper mapper)
         {
             _iLibraryService = ilibraryService;
+            _mapper = mapper;
         }
 
         [Route("Library/Index")]
@@ -45,18 +48,7 @@ namespace LibraryManagement.Web.Controllers
             if (!ModelState.IsValid)
                 return View();
 
-            var newAuthor = new Author()
-            {
-                Name = newBookDto.AuthorName,
-                Age = newBookDto.AuthorAge
-            };
-            var newBook = new Book
-            {
-                Name = newBookDto.BookName,
-                Price = newBookDto.BookPrice,
-                Description = newBookDto.BookDescription,
-                Author = newAuthor
-            };
+            var newBook = _mapper.Map<Book>(newBookDto);
 
             _iLibraryService.Add(newBook);
             TempData["AddBook"] = "کتاب با موفقیت ثبت شد";
@@ -76,13 +68,7 @@ namespace LibraryManagement.Web.Controllers
             var bookListDto = new List<BookListDto>();
             foreach (var book in bookList)
             {
-                bookListDto.Add(new BookListDto
-                {
-                    Id = book.Id,
-                    Book = book.Name,
-                    Author = book.Author.Name,
-                    Description = book.Description
-                });
+                bookListDto.Add(_mapper.Map<BookListDto>(book));
             }
 
             return View(bookListDto);
@@ -98,6 +84,5 @@ namespace LibraryManagement.Web.Controllers
 
             return RedirectToAction("BookList");
         }
-
     }
 }
