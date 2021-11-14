@@ -12,5 +12,7 @@ namespace LibraryManagement.Service
         Task Delete(int bookId);
 
         List<BookListDto> GetBookList();
+
+        bool CheckThereSameBook(string bookName, string authorName);
     }
 }

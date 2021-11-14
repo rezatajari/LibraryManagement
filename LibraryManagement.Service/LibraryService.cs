@@ -46,6 +46,7 @@ namespace LibraryManagement.Service
 
             return bookListDto;
         }
+
         public async Task Delete(int bookId)
         {
             var book = _libraryDatabase.Books.SingleOrDefault(b => b.Id == bookId);
@@ -54,5 +55,19 @@ namespace LibraryManagement.Service
             await _libraryDatabase.SaveChangesAsync();
         }
 
+        public bool CheckThereSameBook(string bookName, string authorName)
+        {
+            var bName = _libraryDatabase.Books.Include(a => a.Author).Where(b => b.Name == bookName).ToList();
+
+            if (bName == null)
+                return false;
+
+            var aName = bName.Where(a => a.Author.Name == authorName).ToList();
+
+            if (aName == null)
+                return false;
+
+            return true;
+        }
     }
 }

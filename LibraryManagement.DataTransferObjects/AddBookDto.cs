@@ -17,6 +17,7 @@ namespace LibraryManagement.DataTransferObjects
 
         [Required(ErrorMessage = "قیمت کتاب را مشخص کنید")]
         [RegularExpression("^(0|[1-9][0-9]*)$", ErrorMessage = "لطفا قیمت را درست وارد کنید")]
+        [StringLength(10, ErrorMessage = "لطفا مقدار صحیح وارد کنید")]
         public string BookPrice { get; set; }
 
         [Required(ErrorMessage = "نام نویسینده را بنویسید")]

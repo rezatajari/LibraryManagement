@@ -30,6 +30,7 @@
     <div class="form-group">
         <label for="description" class="float-right">توضیحات</label>
         <textarea class="form-control" id="description" rows="3" placeholder="توضیحات" asp-for="@Model.BookDescription"></textarea>
+        <span asp-validation-for="BookDescription" class="text-danger"></span>
     </div>
     <button type="submit" class="btn btn-primary w-100">ثبت کتاب</button>
 </form>
@@ -38,5 +39,10 @@
     @if (TempData["AddBook"] != null)
     {
         <h3 class="text-center mt-3 text-success">@TempData["AddBook"]</h3>
+    }
+
+    @if (TempData["ExistBook"] != null)
+    {
+        <h3 class="text-center mt-3 text-warning">@TempData["ExistBook"]</h3>
     }
 </div>

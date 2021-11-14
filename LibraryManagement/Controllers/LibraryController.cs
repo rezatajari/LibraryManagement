@@ -38,11 +38,19 @@ namespace LibraryManagement.Web.Controllers
         [HttpPost]
         public IActionResult AddBook(AddBookDto newBookDto)
         {
+            if (!ModelState.IsValid)
+                return View();
+
             if (newBookDto == null)
                 throw new ArgumentNullException();
 
-            if (!ModelState.IsValid)
-                return View();
+            bool checkExistBook = _iLibraryService.CheckThereSameBook(newBookDto.BookName, newBookDto.AuthorName);
+
+            if (checkExistBook == true)
+            {
+                TempData["ExistBook"] = "این کتاب قبلا ثبت شده است";
+                return RedirectToAction("AddBook");
+            }
 
             _iLibraryService.Add(newBookDto);
             TempData["AddBook"] = "کتاب با موفقیت ثبت شد";
