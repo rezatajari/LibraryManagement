@@ -14,6 +14,10 @@ namespace LibraryManagement.Web
         {
             // مپ کردن دریافت کتاب از دیتابیس به مدل لیست برای ویو
             CreateMap<Book, BookListDto>()
+                .ForMember(des => des.Book, opt => opt.MapFrom(src => src.Name));
+
+            // مپ کردن مدل کتاب برای ویو جزِیِات کتاب
+            CreateMap<Book, BookDetailDto>()
                 .ForMember(des => des.Book, opt => opt.MapFrom(src => src.Name))
                 .ForMember(des => des.Author, opt => opt.MapFrom(src => src.Author.Name));
 

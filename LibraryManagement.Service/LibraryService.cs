@@ -31,9 +31,26 @@ namespace LibraryManagement.Service
             _libraryDatabase.SaveChanges();
         }
 
+        public bool CheckBookExistById(int id)
+        {
+            var getBook = _libraryDatabase.Books.SingleOrDefault(i => i.Id == id);
+
+            if (getBook == null)
+                return false;
+            return true;
+        }
+
+        public BookDetailDto GetBookById(int id)
+        {
+            var getBook = _libraryDatabase.Books.Include(a => a.Author).SingleOrDefault(i => i.Id == id);
+            var bookDetail = _mapper.Map<BookDetailDto>(getBook);
+
+            return bookDetail;
+        }
+
         public List<BookListDto> GetBookList()
         {
-            var bookList = _libraryDatabase.Books.Include(a => a.Author).ToList();
+            var bookList = _libraryDatabase.Books.ToList();
 
             if (bookList == null)
                 throw new ArgumentNullException();
@@ -69,5 +86,6 @@ namespace LibraryManagement.Service
 
             return true;
         }
+
     }
 }

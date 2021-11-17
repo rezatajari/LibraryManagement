@@ -6,10 +6,14 @@ using System.Threading.Tasks;
 
 namespace LibraryManagement.DataTransferObjects
 {
-    public class BookListDto
+    public class BookDetailDto
     {
-        public int Id { get; set; }
-
         public string Book { get; set; }
+
+        public string Author { get; set; }
+
+        public string Price { get; set; }
+
+        public string Description { get; set; }
     }
 }

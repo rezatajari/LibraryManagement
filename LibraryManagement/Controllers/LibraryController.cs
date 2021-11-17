@@ -34,6 +34,11 @@ namespace LibraryManagement.Web.Controllers
             return View(newBookDto);
         }
 
+        /// <summary>
+        /// اضافه کردن کتاب به کتابخانه
+        /// </summary>
+        /// <param name="newBookDto"></param>
+        /// <returns></returns>
         [Route("Library/AddBook")]
         [HttpPost]
         public IActionResult AddBook(AddBookDto newBookDto)
@@ -58,6 +63,10 @@ namespace LibraryManagement.Web.Controllers
             return RedirectToAction("AddBook");
         }
 
+        /// <summary>
+        /// لیست کلیه کتاب های داخل کتابخانه 
+        /// </summary>
+        /// <returns></returns>
         [Route("Library/BookList")]
         [HttpGet]
         public IActionResult BookList()
@@ -67,6 +76,33 @@ namespace LibraryManagement.Web.Controllers
             return View(bookList);
         }
 
+        /// <summary>
+        /// جزئییات کتاب
+        /// </summary>
+        /// <returns></returns>
+        [Route("Library/BookDetail/{id}")]
+        [HttpGet]
+        public IActionResult BookDetail(int id)
+        {
+            bool checkBookExist = _iLibraryService.CheckBookExistById(id);
+
+            if (checkBookExist == false)
+            {
+                TempData["BookNotExist"] = "این کتاب موجود نمیباشد";
+                return View();
+            }
+
+            var book = _iLibraryService.GetBookById(id);
+
+            return View(book);
+        }
+
+
+        /// <summary>
+        /// پاک کردن کتاب از کتابخانه
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
         [Route("Library/DeleteBook/{Id}")]
         [HttpGet]
         public IActionResult DeleteBook(int Id)
@@ -78,4 +114,8 @@ namespace LibraryManagement.Web.Controllers
             return RedirectToAction("BookList");
         }
     }
+
+
+
+    //TODO: پیجینگ برای صفحه بندی راه بندازم
 }

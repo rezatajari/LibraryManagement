@@ -13,6 +13,10 @@ namespace LibraryManagement.Service
 
         List<BookListDto> GetBookList();
 
+        bool CheckBookExistById(int id);
+
+        BookDetailDto GetBookById(int id);
+
         bool CheckThereSameBook(string bookName, string authorName);
     }
 }
