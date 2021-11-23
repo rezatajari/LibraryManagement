@@ -113,6 +113,28 @@ namespace LibraryManagement.Web.Controllers
 
             return RedirectToAction("BookList");
         }
+
+        [Route("Library/Search")]
+        [HttpGet]
+        public IActionResult Search()
+        {
+            return View();
+        }
+
+        [Route("Library/Search")]
+        [HttpPost]
+        public IActionResult Search(string name)
+        {
+            if (name == "")
+            {
+                TempData["EmptyName"] = "فیلد مورد نظر را پر کنید";
+                return RedirectToAction();
+            }
+
+            var book = _iLibraryService.SearchByName(name);
+            TempData["Searched"] = "Done";
+            return View("Search", book);
+        }
     }
 
 

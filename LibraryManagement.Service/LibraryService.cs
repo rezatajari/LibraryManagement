@@ -87,5 +87,15 @@ namespace LibraryManagement.Service
             return true;
         }
 
+        public BookListDto SearchByName(string bookName)
+        {
+            var book = _libraryDatabase.Books.SingleOrDefault(n => n.Name == bookName);
+
+            if (book == null)
+                throw new ArgumentNullException();
+            var bookDto = _mapper.Map<BookListDto>(book);
+
+            return bookDto;
+        }
     }
 }

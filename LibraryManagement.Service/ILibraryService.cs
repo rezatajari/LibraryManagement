@@ -18,5 +18,7 @@ namespace LibraryManagement.Service
         BookDetailDto GetBookById(int id);
 
         bool CheckThereSameBook(string bookName, string authorName);
+
+        BookListDto SearchByName(string bookName);
     }
 }

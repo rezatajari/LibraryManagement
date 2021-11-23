@@ -18,6 +18,7 @@
         <tr>
             <th>نام کتاب</th>
             <th>حذف کتاب</th>
+            <th>جزئیات کتاب</th>
         </tr>
     </thead>
     @foreach (var book in Model)
@@ -27,14 +28,10 @@
                 @book.Book
             </td>
             <td>
-                <div class="row">
-                    <div class="col-6">
-                        <a class="text-danger btn btn-light w-100" href="/Library/DeleteBook/@book.Id">حذف کنید</a>
-                    </div>
-                    <div class="col-6">
-                        <a class="text-info btn btn-info w-100" href="/Library/BookDetail/@book.Id">جزئییات</a>
-                    </div>
-                </div>
+                <a class="text-danger btn btn-light w-100" href="/Library/DeleteBook/@book.Id">حذف</a>
+            </td>
+            <td>
+                <a class="text-info btn btn-info w-100" href="/Library/BookDetail/@book.Id">جزئییات</a>
             </td>
         </tr>
     }
