@@ -7,7 +7,7 @@ namespace LibraryManagement.Service
 {
     public interface ILibraryService
     {
-        Task Add(AddBookDto book);
+        void Add(AddBookDto book);
 
         Task Delete(int bookId);
 
@@ -25,5 +25,8 @@ namespace LibraryManagement.Service
 
         string GetAuthorNameById(int AuthorId);
 
+        bool CheckAuthorExistByName(string AuthorName);
+
+        void AddAuthor(AddAuthorDto newAuthorDto);
     }
 }

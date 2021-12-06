@@ -78,6 +78,23 @@ namespace LibraryManagement.Web.Controllers
         [HttpPost]
         public IActionResult AddAuthor(AddAuthorDto newAuthorDto)
         {
+
+            if (!ModelState.IsValid)
+                return View();
+
+            bool checkExistAuthorName = _iLibraryService.CheckAuthorExistByName(newAuthorDto.Name);
+
+            if (checkExistAuthorName == true)
+            {
+                TempData["ExistAuthor"] = "این نویسنده قبلا ثبت شده است";
+                return RedirectToAction("AddAuthor");
+            }
+
+            _iLibraryService.AddAuthor(newAuthorDto);
+            TempData["AddAuthor"] = "نویسنده با موفقیت ثبت شد";
+
+            return RedirectToAction("AddAuthor");
+
             return View();
         }
 

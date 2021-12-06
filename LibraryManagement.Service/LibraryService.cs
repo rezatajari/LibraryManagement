@@ -23,13 +23,13 @@ namespace LibraryManagement.Service
             _mapper = mapper;
         }
 
-        public async Task Add(AddBookDto book)
+        public void Add(AddBookDto book)
         {
             var newBook = _mapper.Map<Book>(book);
 
             try
             {
-                await _libraryDatabase.Books.AddAsync(newBook);
+                _libraryDatabase.Books.Add(newBook);
                 _libraryDatabase.SaveChanges();
             }
             catch (Exception error)
@@ -129,6 +129,31 @@ namespace LibraryManagement.Service
         {
             var author = _libraryDatabase.Authors.SingleOrDefault(i => i.Id == AuthorId);
             return author.Name;
+        }
+
+        public bool CheckAuthorExistByName(string AuthorName)
+        {
+            var aName = _libraryDatabase.Authors.FirstOrDefault(n => n.Name == AuthorName);
+
+            if (aName != null)
+                return true;
+            return false;
+        }
+
+        public void AddAuthor(AddAuthorDto newAuthorDto)
+        {
+            var newAuthor = _mapper.Map<Author>(newAuthorDto);
+
+            try
+            {
+                _libraryDatabase.Authors.Add(newAuthor);
+                _libraryDatabase.SaveChanges();
+            }
+            catch (Exception error)
+            {
+
+                throw new Exception(error.Message);
+            }
         }
     }
 }
