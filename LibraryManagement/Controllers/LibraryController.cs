@@ -149,6 +149,8 @@ namespace LibraryManagement.Web.Controllers
             return RedirectToAction("BookList");
         }
 
+        //public IActionResult DeleteAuthor()
+
         [Route("Library/Search")]
         [HttpGet]
         public IActionResult Search()
@@ -171,6 +173,13 @@ namespace LibraryManagement.Web.Controllers
             return View("Search", book);
         }
 
+        [Route("Library/AuthorList")]
+        [HttpGet]
+        public IActionResult AuthorList()
+        {
+            var authors = _iLibraryService.GetAuthorList();
+            return View(authors);
+        }
 
     }
 
