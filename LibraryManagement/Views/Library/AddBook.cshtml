@@ -13,14 +13,11 @@
         <span asp-validation-for="BookName" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label for="author" class="float-right">نام نویسنده</label>
-        <input type="text" class="form-control" id="author" asp-for="@Model.AuthorName" placeholder="نام نویسنده">
-        <span asp-validation-for="AuthorName" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label for="authorage" class="float-right">سن نویسنده</label>
-        <input type="text" class="form-control" id="authorage" asp-for="@Model.AuthorAge" value="" placeholder="سن نویسنده">
-        <span asp-validation-for="AuthorAge" class="text-danger"></span>
+        <label for="bookname" class="float-right">نام نویسنده</label>
+        <select class="form-control" asp-for="AuthorId" asp-items="@(new SelectList(ViewBag.AuthorList,"Id","Name"))">
+            <option>لطفا نام نویسنده را انتخاب کنید</option>
+        </select>
+        <span asp-validation-for="AuthorId" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label for="price" class="float-right">قیمت کتاب</label>
@@ -37,12 +34,12 @@
 
 <div>
     @if (TempData["AddBook"] != null)
-    {
+        {
         <h3 class="text-center mt-3 text-success">@TempData["AddBook"]</h3>
-    }
+        }
 
     @if (TempData["ExistBook"] != null)
-    {
+        {
         <h3 class="text-center mt-3 text-warning">@TempData["ExistBook"]</h3>
-    }
+        }
 </div>

@@ -1,0 +1,38 @@
+﻿@model LibraryManagement.DataTransferObjects.AddAuthorDto
+
+@{
+    ViewData["Title"] = "AddAuthor";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row"><h2 class="float-right mt-4">ثبت نویسنده جدید</h2></div>
+
+<hr />
+<div class="center-block w-50">
+    <div class="col">
+        <form asp-action="AddAuthor">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label float-right">نام نویسنده</label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Age" class="control-label float-right">سن نویسنده</label>
+                <input asp-for="Age" class="form-control" />
+                <span asp-validation-for="Age" class="text-danger"></span>
+            </div>
+            <div class="row">
+                <div class="form-group col-6">
+                    <input type="submit" value="ثبت" class="btn btn-primary w-100" />
+                </div>
+                <div class="form-group col-6">
+                    <a asp-action="Index" class="btn btn-info w-100">صفحه نخست</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+

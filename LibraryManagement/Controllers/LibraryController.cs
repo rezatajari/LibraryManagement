@@ -31,6 +31,7 @@ namespace LibraryManagement.Web.Controllers
         public IActionResult AddBook()
         {
             var newBookDto = new AddBookDto();
+            ViewBag.AuthorList = _iLibraryService.GetAuthorList();
             return View(newBookDto);
         }
 
@@ -49,7 +50,9 @@ namespace LibraryManagement.Web.Controllers
             if (newBookDto == null)
                 throw new ArgumentNullException();
 
-            bool checkExistBook = _iLibraryService.CheckThereSameBook(newBookDto.BookName, newBookDto.AuthorName);
+            string authorName = _iLibraryService.GetAuthorNameById(newBookDto.AuthorId);
+
+            bool checkExistBook = _iLibraryService.CheckThereSameBook(newBookDto.BookName, authorName);
 
             if (checkExistBook == true)
             {
@@ -61,6 +64,21 @@ namespace LibraryManagement.Web.Controllers
             TempData["AddBook"] = "کتاب با موفقیت ثبت شد";
 
             return RedirectToAction("AddBook");
+        }
+
+        [Route("Library/AddAuthor")]
+        [HttpGet]
+        public IActionResult AddAuthor()
+        {
+            var newAuthor = new AddAuthorDto();
+            return View(newAuthor);
+        }
+
+        [Route("Library/AddAuthor")]
+        [HttpPost]
+        public IActionResult AddAuthor(AddAuthorDto newAuthorDto)
+        {
+            return View();
         }
 
         /// <summary>
@@ -135,6 +153,8 @@ namespace LibraryManagement.Web.Controllers
             TempData["Searched"] = "Done";
             return View("Search", book);
         }
+
+
     }
 
 

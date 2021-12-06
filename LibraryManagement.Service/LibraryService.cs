@@ -27,17 +27,44 @@ namespace LibraryManagement.Service
         {
             var newBook = _mapper.Map<Book>(book);
 
-            await _libraryDatabase.Books.AddAsync(newBook);
-            _libraryDatabase.SaveChanges();
+            try
+            {
+                await _libraryDatabase.Books.AddAsync(newBook);
+                _libraryDatabase.SaveChanges();
+            }
+            catch (Exception error)
+            {
+                throw new Exception(error.Message);
+            }
         }
 
         public bool CheckBookExistById(int id)
         {
-            var getBook = _libraryDatabase.Books.SingleOrDefault(i => i.Id == id);
+            try
+            {
+                var getBook = _libraryDatabase.Books.SingleOrDefault(i => i.Id == id);
 
-            if (getBook == null)
-                return false;
-            return true;
+                if (getBook == null)
+                    return false;
+                return true;
+            }
+            catch (Exception error)
+            {
+                throw new Exception(error.Message);
+            }
+        }
+
+        public List<AuthorView> GetAuthorList()
+        {
+            var authors = _libraryDatabase.Authors.ToList();
+            var authorViewList = new List<AuthorView>();
+
+            foreach (var author in authors)
+            {
+                authorViewList.Add(_mapper.Map<AuthorView>(author));
+            }
+
+            return authorViewList;
         }
 
         public BookDetailDto GetBookById(int id)
@@ -76,12 +103,12 @@ namespace LibraryManagement.Service
         {
             var bName = _libraryDatabase.Books.Include(a => a.Author).Where(b => b.Name == bookName).ToList();
 
-            if (bName == null)
+            if (bName.Count == 0)
                 return false;
 
             var aName = bName.Where(a => a.Author.Name == authorName).ToList();
 
-            if (aName == null)
+            if (aName.Count == 0)
                 return false;
 
             return true;
@@ -96,6 +123,12 @@ namespace LibraryManagement.Service
             var bookDto = _mapper.Map<BookListDto>(book);
 
             return bookDto;
+        }
+
+        public string GetAuthorNameById(int AuthorId)
+        {
+            var author = _libraryDatabase.Authors.SingleOrDefault(i => i.Id == AuthorId);
+            return author.Name;
         }
     }
 }

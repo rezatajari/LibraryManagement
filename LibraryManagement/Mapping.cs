@@ -25,9 +25,14 @@ namespace LibraryManagement.Web
             CreateMap<AddBookDto, Book>()
                 .ForMember(des => des.Name, opt => opt.MapFrom(src => src.BookName))
                 .ForMember(des => des.Description, opt => opt.MapFrom(src => src.BookDescription))
-                .ForMember(des => des.Price, opt => opt.MapFrom(src => src.BookPrice))
-                .ForPath(des => des.Author.Name, opt => opt.MapFrom(src => src.AuthorName))
-                .ForPath(des => des.Author.Age, opt => opt.MapFrom(src => src.AuthorAge));
+                .ForMember(des => des.Price, opt => opt.MapFrom(src => src.BookPrice));
+
+            // مپ کردن مدل ویو نویسنده به مدل موجودیت نویسنده دیتابیس
+            CreateMap<AddAuthorDto, Author>();
+
+            // مپ کردن مدل نویسنده داخل دیتابیس به مدل قابل نمایش برای ایجاد کتاب
+            CreateMap<Author, AuthorView>();
+
         }
     }
 }

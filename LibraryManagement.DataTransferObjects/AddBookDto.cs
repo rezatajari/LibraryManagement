@@ -20,12 +20,7 @@ namespace LibraryManagement.DataTransferObjects
         [StringLength(10, ErrorMessage = "لطفا مقدار صحیح وارد کنید")]
         public string BookPrice { get; set; }
 
-        [Required(ErrorMessage = "نام نویسینده را بنویسید")]
-        public string AuthorName { get; set; }
-
-        [Required(ErrorMessage = "سن نویسنده را مشخص کنید")]
-        [StringLength(2, ErrorMessage = "لطفا مقدار صحیح وارد کنید")]
-        [RegularExpression("^[0-9]*$", ErrorMessage = "لطفا سن را درست وارد کنید")]
-        public string AuthorAge { get; set; }
+        [Required]
+        public int AuthorId { get; set; }
     }
 }

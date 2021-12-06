@@ -20,5 +20,10 @@ namespace LibraryManagement.Service
         bool CheckThereSameBook(string bookName, string authorName);
 
         BookListDto SearchByName(string bookName);
+
+        List<AuthorView> GetAuthorList();
+
+        string GetAuthorNameById(int AuthorId);
+
     }
 }
