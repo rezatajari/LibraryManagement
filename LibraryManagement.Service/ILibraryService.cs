@@ -9,7 +9,7 @@ namespace LibraryManagement.Service
     {
         void Add(AddBookDto book);
 
-        Task Delete(int bookId);
+        void Delete(int bookId);
 
         List<BookListDto> GetBookList();
 
@@ -28,5 +28,7 @@ namespace LibraryManagement.Service
         bool CheckAuthorExistByName(string AuthorName);
 
         void AddAuthor(AddAuthorDto newAuthorDto);
+
+        void DeleteAuthor(int Id);
     }
 }

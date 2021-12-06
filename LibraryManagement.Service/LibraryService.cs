@@ -91,12 +91,12 @@ namespace LibraryManagement.Service
             return bookListDto;
         }
 
-        public async Task Delete(int bookId)
+        public void Delete(int bookId)
         {
             var book = _libraryDatabase.Books.SingleOrDefault(b => b.Id == bookId);
 
             _libraryDatabase.Books.Remove(book);
-            await _libraryDatabase.SaveChangesAsync();
+            _libraryDatabase.SaveChanges();
         }
 
         public bool CheckThereSameBook(string bookName, string authorName)
@@ -154,6 +154,19 @@ namespace LibraryManagement.Service
 
                 throw new Exception(error.Message);
             }
+        }
+
+        void ILibraryService.Delete(int bookId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteAuthor(int Id)
+        {
+            Author author = _libraryDatabase.Authors.SingleOrDefault(a => a.Id == Id);
+
+            _libraryDatabase.Authors.Remove(author);
+            _libraryDatabase.SaveChanges();
         }
     }
 }
