@@ -95,7 +95,6 @@ namespace LibraryManagement.Web.Controllers
 
             return RedirectToAction("AddAuthor");
 
-            return View();
         }
 
         /// <summary>
@@ -189,9 +188,23 @@ namespace LibraryManagement.Web.Controllers
             return RedirectToAction("AuthorList");
         }
 
+        [Route("Library/AuthorDetail/{id}")]
+        [HttpGet]
+        public IActionResult AuthorDetail(int Id)
+        {
+            bool checkAuthorExist = _iLibraryService.CheckAuthorExistById(Id);
+
+            if (checkAuthorExist == false)
+            {
+                TempData["AuthorNotExist"] = "این نویسنده موجود نمی باشد";
+                return View();
+            }
+
+            AuthorDetailDto authorDetailDto = _iLibraryService.GetAuthorById(Id);
+
+            return View(authorDetailDto);
+        }
     }
-
-
 
     //TODO: پیجینگ برای صفحه بندی راه بندازم
 }

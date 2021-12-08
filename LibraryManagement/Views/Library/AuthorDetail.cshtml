@@ -1,0 +1,32 @@
+﻿@model LibraryManagement.DataTransferObjects.AuthorDetailDto
+@{
+    ViewData["Title"] = "AuthorDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row"><h2 class="float-right mt-4">جزئیات نویسنده</h2></div>
+
+<div>
+    @if (TempData["AuthorNotExist"] != null)
+    {
+        <h3 class="text-center mt-3 text-danger">@TempData["AuthorNotExist"]</h3>
+    }
+</div>
+
+<div class="card text-center center-block w-50" style="width: 18rem;">
+    <div class="card-body">
+        <h5 class="card-title bg-danger p-2">@Model.Name</h5>
+        <div class="bg-secondary">
+            <label>سن</label>
+            <p class="card-text m-0">@Model.Age</p>
+        </div>
+        <div class="bg-info">
+            <label>توضیحات</label>
+            <p>@Model.BookCount</p>
+        </div>
+        <a asp-controller="Library" asp-action="BookList" class="btn btn-primary">برگشت</a>
+    </div>
+</div>
+
+
+

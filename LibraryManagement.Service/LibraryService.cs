@@ -168,5 +168,25 @@ namespace LibraryManagement.Service
             _libraryDatabase.Authors.Remove(author);
             _libraryDatabase.SaveChanges();
         }
+
+        public bool CheckAuthorExistById(int id)
+        {
+            Author author = _libraryDatabase.Authors.SingleOrDefault(i => i.Id == id);
+
+            if (author == null)
+                return false;
+
+            return true;
+        }
+
+        public AuthorDetailDto GetAuthorById(int id)
+        {
+            Author author = _libraryDatabase.Authors.Include(b => b.Books).SingleOrDefault(i => i.Id == id);
+
+            AuthorDetailDto authorDetailDto = _mapper.Map<AuthorDetailDto>(author);
+            authorDetailDto.BookCount = author.Books.Count;
+
+            return authorDetailDto;
+        }
     }
 }

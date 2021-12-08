@@ -30,5 +30,8 @@ namespace LibraryManagement.Service
         void AddAuthor(AddAuthorDto newAuthorDto);
 
         void DeleteAuthor(int Id);
+
+        bool CheckAuthorExistById(int id);
+        AuthorDetailDto GetAuthorById(int id);
     }
 }
