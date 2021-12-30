@@ -5,6 +5,7 @@ using LibraryManagement.Service;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace LibraryManagement.Web.Controllers
 {
@@ -28,10 +29,10 @@ namespace LibraryManagement.Web.Controllers
 
         [Route("Library/AddBook")]
         [HttpGet]
-        public IActionResult AddBook()
+        public async Task<IActionResult> AddBook()
         {
             var newBookDto = new AddBookDto();
-            ViewBag.AuthorList = _iLibraryService.GetAuthorList();
+            ViewBag.AuthorList = await _iLibraryService.GetAuthorList();
             return View(newBookDto);
         }
 
@@ -42,7 +43,7 @@ namespace LibraryManagement.Web.Controllers
         /// <returns></returns>
         [Route("Library/AddBook")]
         [HttpPost]
-        public IActionResult AddBook(AddBookDto newBookDto)
+        public async Task<IActionResult> AddBook(AddBookDto newBookDto)
         {
             if (!ModelState.IsValid)
                 return View();
@@ -50,9 +51,9 @@ namespace LibraryManagement.Web.Controllers
             if (newBookDto == null)
                 throw new ArgumentNullException();
 
-            string authorName = _iLibraryService.GetAuthorNameById(newBookDto.AuthorId);
+            string authorName = await _iLibraryService.GetAuthorNameById(newBookDto.AuthorId);
 
-            bool checkExistBook = _iLibraryService.CheckThereSameBook(newBookDto.BookName, authorName);
+            bool checkExistBook = await _iLibraryService.CheckThereSameBook(newBookDto.BookName, authorName);
 
             if (checkExistBook == true)
             {
@@ -60,7 +61,7 @@ namespace LibraryManagement.Web.Controllers
                 return RedirectToAction("AddBook");
             }
 
-            _iLibraryService.Add(newBookDto);
+            await _iLibraryService.Add(newBookDto);
             TempData["AddBook"] = "کتاب با موفقیت ثبت شد";
 
             return RedirectToAction("AddBook");
@@ -76,13 +77,13 @@ namespace LibraryManagement.Web.Controllers
 
         [Route("Library/AddAuthor")]
         [HttpPost]
-        public IActionResult AddAuthor(AddAuthorDto newAuthorDto)
+        public async Task<IActionResult> AddAuthor(AddAuthorDto newAuthorDto)
         {
 
             if (!ModelState.IsValid)
                 return View();
 
-            bool checkExistAuthorName = _iLibraryService.CheckAuthorExistByName(newAuthorDto.Name);
+            bool checkExistAuthorName = await _iLibraryService.CheckAuthorExistByName(newAuthorDto.Name);
 
             if (checkExistAuthorName == true)
             {
@@ -90,7 +91,7 @@ namespace LibraryManagement.Web.Controllers
                 return RedirectToAction("AddAuthor");
             }
 
-            _iLibraryService.AddAuthor(newAuthorDto);
+            await _iLibraryService.AddAuthor(newAuthorDto);
             TempData["AddAuthor"] = "نویسنده با موفقیت ثبت شد";
 
             return RedirectToAction("AddAuthor");
@@ -103,9 +104,9 @@ namespace LibraryManagement.Web.Controllers
         /// <returns></returns>
         [Route("Library/BookList")]
         [HttpGet]
-        public IActionResult BookList()
+        public async Task<IActionResult> BookList()
         {
-            var bookList = _iLibraryService.GetBookList();
+            var bookList = await _iLibraryService.GetBookList();
 
             return View(bookList);
         }
@@ -116,9 +117,9 @@ namespace LibraryManagement.Web.Controllers
         /// <returns></returns>
         [Route("Library/BookDetail/{id}")]
         [HttpGet]
-        public IActionResult BookDetail(int id)
+        public async Task<IActionResult> BookDetail(int id)
         {
-            bool checkBookExist = _iLibraryService.CheckBookExistById(id);
+            bool checkBookExist = await _iLibraryService.CheckBookExistById(id);
 
             if (checkBookExist == false)
             {
@@ -126,11 +127,10 @@ namespace LibraryManagement.Web.Controllers
                 return View();
             }
 
-            var book = _iLibraryService.GetBookById(id);
+            var book = await _iLibraryService.GetBookById(id);
 
             return View(book);
         }
-
 
         /// <summary>
         /// پاک کردن کتاب از کتابخانه
@@ -139,10 +139,10 @@ namespace LibraryManagement.Web.Controllers
         /// <returns></returns>
         [Route("Library/DeleteBook/{Id}")]
         [HttpGet]
-        public IActionResult DeleteBook(int Id)
+        public async Task<IActionResult> DeleteBook(int Id)
         {
 
-            _iLibraryService.Delete(Id);
+            await _iLibraryService.Delete(Id);
             TempData["DeleteBook"] = "کتاب با موفقیت حذف شد";
 
             return RedirectToAction("BookList");
@@ -157,7 +157,7 @@ namespace LibraryManagement.Web.Controllers
 
         [Route("Library/Search")]
         [HttpPost]
-        public IActionResult Search(string name)
+        public async Task<IActionResult> Search(string name)
         {
             if (name == "")
             {
@@ -165,24 +165,24 @@ namespace LibraryManagement.Web.Controllers
                 return RedirectToAction();
             }
 
-            var book = _iLibraryService.SearchByName(name);
+            var book = await _iLibraryService.SearchByName(name);
             TempData["Searched"] = "Done";
             return View("Search", book);
         }
 
         [Route("Library/AuthorList")]
         [HttpGet]
-        public IActionResult AuthorList()
+        public async Task<IActionResult> AuthorList()
         {
-            var authors = _iLibraryService.GetAuthorList();
+            var authors = await _iLibraryService.GetAuthorList();
             return View(authors);
         }
 
         [Route("Library/DeleteAuthor/{Id}")]
         [HttpGet]
-        public IActionResult DeleteAuthor(int Id)
+        public async Task<IActionResult> DeleteAuthor(int Id)
         {
-            _iLibraryService.DeleteAuthor(Id);
+            await _iLibraryService.DeleteAuthor(Id);
             TempData["DeleteAuthor"] = "نویسنده با موفقیت حذف شد";
 
             return RedirectToAction("AuthorList");
@@ -190,9 +190,9 @@ namespace LibraryManagement.Web.Controllers
 
         [Route("Library/AuthorDetail/{id}")]
         [HttpGet]
-        public IActionResult AuthorDetail(int Id)
+        public async Task<IActionResult> AuthorDetail(int Id)
         {
-            bool checkAuthorExist = _iLibraryService.CheckAuthorExistById(Id);
+            bool checkAuthorExist = await _iLibraryService.CheckAuthorExistById(Id);
 
             if (checkAuthorExist == false)
             {
@@ -200,7 +200,7 @@ namespace LibraryManagement.Web.Controllers
                 return View();
             }
 
-            AuthorDetailDto authorDetailDto = _iLibraryService.GetAuthorById(Id);
+            AuthorDetailDto authorDetailDto = await _iLibraryService.GetAuthorById(Id);
 
             return View(authorDetailDto);
         }

@@ -23,14 +23,13 @@ namespace LibraryManagement.Service
             _mapper = mapper;
         }
 
-        public void Add(AddBookDto book)
+        public async Task Add(AddBookDto book)
         {
-            var newBook = _mapper.Map<Book>(book);
-
             try
             {
-                _libraryDatabase.Books.Add(newBook);
-                _libraryDatabase.SaveChanges();
+                var newBook = _mapper.Map<Book>(book);
+                await _libraryDatabase.Books.AddAsync(newBook);
+                await _libraryDatabase.SaveChangesAsync();
             }
             catch (Exception error)
             {
@@ -38,11 +37,11 @@ namespace LibraryManagement.Service
             }
         }
 
-        public bool CheckBookExistById(int id)
+        public async Task<bool> CheckBookExistById(int id)
         {
             try
             {
-                var getBook = _libraryDatabase.Books.SingleOrDefault(i => i.Id == id);
+                var getBook = await _libraryDatabase.Books.SingleOrDefaultAsync(i => i.Id == id);
 
                 if (getBook == null)
                     return false;
@@ -54,9 +53,9 @@ namespace LibraryManagement.Service
             }
         }
 
-        public List<AuthorView> GetAuthorList()
+        public async Task<List<AuthorView>> GetAuthorList()
         {
-            var authors = _libraryDatabase.Authors.ToList();
+            var authors = await _libraryDatabase.Authors.ToListAsync();
             var authorViewList = new List<AuthorView>();
 
             foreach (var author in authors)
@@ -67,17 +66,17 @@ namespace LibraryManagement.Service
             return authorViewList;
         }
 
-        public BookDetailDto GetBookById(int id)
+        public async Task<BookDetailDto> GetBookById(int id)
         {
-            var getBook = _libraryDatabase.Books.Include(a => a.Author).SingleOrDefault(i => i.Id == id);
+            var getBook = await _libraryDatabase.Books.Include(a => a.Author).SingleOrDefaultAsync(i => i.Id == id);
             var bookDetail = _mapper.Map<BookDetailDto>(getBook);
 
             return bookDetail;
         }
 
-        public List<BookListDto> GetBookList()
+        public async Task<List<BookListDto>> GetBookList()
         {
-            var bookList = _libraryDatabase.Books.ToList();
+            var bookList = await _libraryDatabase.Books.ToListAsync();
 
             if (bookList == null)
                 throw new ArgumentNullException();
@@ -91,17 +90,17 @@ namespace LibraryManagement.Service
             return bookListDto;
         }
 
-        public void Delete(int bookId)
+        public async Task Delete(int bookId)
         {
-            var book = _libraryDatabase.Books.SingleOrDefault(b => b.Id == bookId);
+            Book book = await _libraryDatabase.Books.SingleOrDefaultAsync(b => b.Id == bookId);
 
             _libraryDatabase.Books.Remove(book);
-            _libraryDatabase.SaveChanges();
+            await _libraryDatabase.SaveChangesAsync();
         }
 
-        public bool CheckThereSameBook(string bookName, string authorName)
+        public async Task<bool> CheckThereSameBook(string bookName, string authorName)
         {
-            var bName = _libraryDatabase.Books.Include(a => a.Author).Where(b => b.Name == bookName).ToList();
+            var bName = await _libraryDatabase.Books.Include(a => a.Author).Where(b => b.Name == bookName).ToListAsync();
 
             if (bName.Count == 0)
                 return false;
@@ -114,9 +113,9 @@ namespace LibraryManagement.Service
             return true;
         }
 
-        public BookListDto SearchByName(string bookName)
+        public async Task<BookListDto> SearchByName(string bookName)
         {
-            var book = _libraryDatabase.Books.SingleOrDefault(n => n.Name == bookName);
+            var book = await _libraryDatabase.Books.SingleOrDefaultAsync(n => n.Name == bookName);
 
             if (book == null)
                 throw new ArgumentNullException();
@@ -125,29 +124,37 @@ namespace LibraryManagement.Service
             return bookDto;
         }
 
-        public string GetAuthorNameById(int AuthorId)
+        public async Task<string> GetAuthorNameById(int AuthorId)
         {
-            var author = _libraryDatabase.Authors.SingleOrDefault(i => i.Id == AuthorId);
-            return author.Name;
+            try
+            {
+                var author = await _libraryDatabase.Authors.SingleOrDefaultAsync(i => i.Id == AuthorId);
+
+                return author.Name;
+            }
+            catch (Exception)
+            {
+                throw new ArgumentNullException("همچین نام نویسنده ای نداریم");
+            }
         }
 
-        public bool CheckAuthorExistByName(string AuthorName)
+        public async Task<bool> CheckAuthorExistByName(string AuthorName)
         {
-            var aName = _libraryDatabase.Authors.FirstOrDefault(n => n.Name == AuthorName);
+            var aName = await _libraryDatabase.Authors.FirstOrDefaultAsync(n => n.Name == AuthorName);
 
             if (aName != null)
                 return true;
             return false;
         }
 
-        public void AddAuthor(AddAuthorDto newAuthorDto)
+        public async Task AddAuthor(AddAuthorDto newAuthorDto)
         {
             var newAuthor = _mapper.Map<Author>(newAuthorDto);
 
             try
             {
-                _libraryDatabase.Authors.Add(newAuthor);
-                _libraryDatabase.SaveChanges();
+                await _libraryDatabase.Authors.AddAsync(newAuthor);
+                await _libraryDatabase.SaveChangesAsync();
             }
             catch (Exception error)
             {
@@ -156,22 +163,17 @@ namespace LibraryManagement.Service
             }
         }
 
-        void ILibraryService.Delete(int bookId)
+        public async Task DeleteAuthor(int Id)
         {
-            throw new NotImplementedException();
-        }
-
-        public void DeleteAuthor(int Id)
-        {
-            Author author = _libraryDatabase.Authors.SingleOrDefault(a => a.Id == Id);
+            Author author = await _libraryDatabase.Authors.SingleOrDefaultAsync(a => a.Id == Id);
 
             _libraryDatabase.Authors.Remove(author);
-            _libraryDatabase.SaveChanges();
+            await _libraryDatabase.SaveChangesAsync();
         }
 
-        public bool CheckAuthorExistById(int id)
+        public async Task<bool> CheckAuthorExistById(int id)
         {
-            Author author = _libraryDatabase.Authors.SingleOrDefault(i => i.Id == id);
+            Author author = await _libraryDatabase.Authors.SingleOrDefaultAsync(i => i.Id == id);
 
             if (author == null)
                 return false;
@@ -179,9 +181,9 @@ namespace LibraryManagement.Service
             return true;
         }
 
-        public AuthorDetailDto GetAuthorById(int id)
+        public async Task<AuthorDetailDto> GetAuthorById(int id)
         {
-            Author author = _libraryDatabase.Authors.Include(b => b.Books).SingleOrDefault(i => i.Id == id);
+            Author author = await _libraryDatabase.Authors.Include(b => b.Books).SingleOrDefaultAsync(i => i.Id == id);
 
             AuthorDetailDto authorDetailDto = _mapper.Map<AuthorDetailDto>(author);
             authorDetailDto.BookCount = author.Books.Count;

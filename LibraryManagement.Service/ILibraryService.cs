@@ -7,31 +7,32 @@ namespace LibraryManagement.Service
 {
     public interface ILibraryService
     {
-        void Add(AddBookDto book);
+        Task Add(AddBookDto book);
 
-        void Delete(int bookId);
+        Task Delete(int bookId);
 
-        List<BookListDto> GetBookList();
+        Task<List<BookListDto>> GetBookList();
 
-        bool CheckBookExistById(int id);
+        Task<bool> CheckBookExistById(int id);
 
-        BookDetailDto GetBookById(int id);
+        Task<BookDetailDto> GetBookById(int id);
 
-        bool CheckThereSameBook(string bookName, string authorName);
+        Task<bool> CheckThereSameBook(string bookName, string authorName);
 
-        BookListDto SearchByName(string bookName);
+        Task<BookListDto> SearchByName(string bookName);
 
-        List<AuthorView> GetAuthorList();
+        Task<List<AuthorView>> GetAuthorList();
 
-        string GetAuthorNameById(int AuthorId);
+        Task<string> GetAuthorNameById(int AuthorId);
 
-        bool CheckAuthorExistByName(string AuthorName);
+        Task<bool> CheckAuthorExistByName(string AuthorName);
 
-        void AddAuthor(AddAuthorDto newAuthorDto);
+        Task AddAuthor(AddAuthorDto newAuthorDto);
 
-        void DeleteAuthor(int Id);
+        Task DeleteAuthor(int Id);
 
-        bool CheckAuthorExistById(int id);
-        AuthorDetailDto GetAuthorById(int id);
+        Task<bool> CheckAuthorExistById(int id);
+
+        Task<AuthorDetailDto> GetAuthorById(int id);
     }
 }
