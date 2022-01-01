@@ -1,4 +1,4 @@
-﻿@model LibraryManagement.DataTransferObjects.AddBookDto;
+﻿@model LibraryManagement.Web.Models.ViewModel.AddBookViewModel;
 @{
     ViewData["Title"] = "AddBook";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -9,40 +9,41 @@
 <form class="mt-3 w-50 center-block" method="post" asp-controller="Library" asp-action="AddBook">
     <div class="form-group">
         <label for="bookname" class="float-right">نام کتاب</label>
-        <input type="text" class="form-control" id="bookname" asp-for="@Model.BookName" placeholder="نام کتاب">
-        <span asp-validation-for="BookName" class="text-danger"></span>
+        <input type="text" class="form-control" id="bookname" asp-for="AddBookDto.BookName" placeholder="نام کتاب">
+        <span asp-validation-for="AddBookDto.BookName" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label for="bookname" class="float-right">نام نویسنده</label>
-        <select class="form-control" asp-for="AuthorId" asp-items="@(new SelectList(ViewBag.AuthorList,"Id","Name"))">
-            <option>لطفا نام نویسنده را انتخاب کنید</option>
-        </select>
-        <span asp-validation-for="AuthorId" class="text-danger"></span>
+        @if (Model.AuthorListMessageContract.IsSuccess == true)
+        {
+            <select class="form-control" asp-for="AddBookDto.AuthorId" asp-items="@(new SelectList(Model.AuthorListMessageContract.Data,"Id","Name"))">
+                <option>لطفا نام نویسنده را انتخاب کنید</option>
+            </select>
+        }
+        <span asp-validation-for="AddBookDto.AuthorId" class="text-danger"></span>
     </div>
     <div class="form-group col">
         <a asp-action="AddAuthor" class="w-100 btn btn-outline-success">اضافه کردن نویسنده</a>
     </div>
     <div class="form-group">
         <label for="price" class="float-right">قیمت کتاب</label>
-        <input type="text" class="form-control" id="price" asp-for="@Model.BookPrice" placeholder="قیمت کتاب">
-        <span asp-validation-for="BookPrice" class="text-danger"></span>
+        <input type="text" class="form-control" id="price" asp-for="AddBookDto.BookPrice" placeholder="قیمت کتاب">
+        <span asp-validation-for="AddBookDto.BookPrice" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label for="description" class="float-right">توضیحات</label>
-        <textarea class="form-control" id="description" rows="3" placeholder="توضیحات" asp-for="@Model.BookDescription"></textarea>
-        <span asp-validation-for="BookDescription" class="text-danger"></span>
+        <textarea class="form-control" id="description" rows="3" placeholder="توضیحات" asp-for="AddBookDto.BookDescription"></textarea>
+        <span asp-validation-for="AddBookDto.BookDescription" class="text-danger"></span>
     </div>
     <button type="submit" class="btn btn-primary w-100">ثبت کتاب</button>
 </form>
 
 <div>
-    @if (TempData["AddBook"] != null)
+    @if (Model.AuthorListMessageContract.IsSuccess == false)
+    {
+        foreach (var error in Model.AuthorListMessageContract.Errors)
         {
-        <h3 class="text-center mt-3 text-success">@TempData["AddBook"]</h3>
+            <h3 class="text-center mt-3 text-danger">@error</h3>
         }
-
-    @if (TempData["ExistBook"] != null)
-        {
-        <h3 class="text-center mt-3 text-warning">@TempData["ExistBook"]</h3>
-        }
+    }
 </div>

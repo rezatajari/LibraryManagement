@@ -53,17 +53,41 @@ namespace LibraryManagement.Service
             }
         }
 
-        public async Task<List<AuthorView>> GetAuthorList()
+        public async Task<MessageContract<List<AuthorView>>> GetAuthorList()
         {
-            var authors = await _libraryDatabase.Authors.ToListAsync();
-            var authorViewList = new List<AuthorView>();
 
-            foreach (var author in authors)
+            var data = new List<AuthorView>();
+            MessageContract<List<AuthorView>> response = null;
+
+            try
             {
-                authorViewList.Add(_mapper.Map<AuthorView>(author));
+                var authors = await _libraryDatabase.Authors.ToListAsync();
+
+                if (authors.Count == 0)
+                {
+                    response = new MessageContract<List<AuthorView>>();
+                    response.IsSuccess = false;
+                    response.Errors.Add("نویسنده ای وجود ندارد");
+                }
+                else
+                {
+                    foreach (var author in authors)
+                    {
+                        data.Add(_mapper.Map<AuthorView>(author));
+                    }
+
+                    response = new MessageContract<List<AuthorView>>();
+                    response.IsSuccess = true;
+                    response.Data = data;
+                }
+
+                return response;
+            }
+            catch (Exception er)
+            {
+                throw new Exception(er.Message);
             }
 
-            return authorViewList;
         }
 
         public async Task<BookDetailDto> GetBookById(int id)

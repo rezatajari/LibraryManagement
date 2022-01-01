@@ -21,7 +21,7 @@ namespace LibraryManagement.Service
 
         Task<BookListDto> SearchByName(string bookName);
 
-        Task<List<AuthorView>> GetAuthorList();
+        Task<MessageContract<List<AuthorView>>> GetAuthorList();
 
         Task<string> GetAuthorNameById(int AuthorId);
 
