@@ -2,7 +2,6 @@
 using LibraryManagement.DataTransferObjects;
 using LibraryManagement.Entities;
 using LibraryManagement.Service;
-using LibraryManagement.Web.Models.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -37,13 +36,9 @@ namespace LibraryManagement.Web.Controllers
         public async Task<IActionResult> AddBook()
         {
             var result = await _iLibraryService.GetAuthorList();
+            ViewBag.AuthorList = result;
 
-            var addBookViewModel = new AddBookViewModel()
-            {
-                AuthorListMessageContract = result,
-            };
-
-            return View(addBookViewModel);
+            return View();
         }
 
         /// <summary>
