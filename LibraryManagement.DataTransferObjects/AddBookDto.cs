@@ -12,8 +12,8 @@ namespace LibraryManagement.DataTransferObjects
         [Required(ErrorMessage = "اسم کتاب را بنویسید")]
         public string BookName { get; set; }
 
-        [Required(ErrorMessage = "لطفا توضیحاتی برای کتاب بنویسید")]
-        public string BookDescription { get; set; }
+        //[Required(ErrorMessage = "لطفا توضیحاتی برای کتاب بنویسید")]
+        public string BookDescription { get; set; } 
 
         [Required(ErrorMessage = "قیمت کتاب را مشخص کنید")]
         [RegularExpression("^(0|[1-9][0-9]*)$", ErrorMessage = "لطفا قیمت را درست وارد کنید")]

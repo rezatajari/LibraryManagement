@@ -11,11 +11,15 @@ namespace LibraryManagement.Service
         public MessageContract()
         {
             Errors = new List<string>();
+            Message = null;
+            IsSuccess = false;
         }
 
         public bool IsSuccess { get; set; }
 
         public List<string> Errors { get; set; }
+
+        public string Message { get; set; }
     }
 
 

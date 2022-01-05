@@ -56,18 +56,26 @@ namespace LibraryManagement.Web.Controllers
             if (newBookDto == null)
                 throw new ArgumentNullException();
 
-            string authorName = await _iLibraryService.GetAuthorNameById(newBookDto.AuthorId);
+            var authorResponse = await _iLibraryService.GetAuthorNameById(newBookDto.AuthorId);
+            string authorName = authorResponse.Data;
+            string bookName = newBookDto.BookName;
 
-            bool checkExistBook = await _iLibraryService.CheckThereSameBook(newBookDto.BookName, authorName);
-
-            if (checkExistBook == true)
+            if (authorResponse.IsSuccess == false)
             {
-                TempData["ExistBook"] = "این کتاب قبلا ثبت شده است";
+                TempData["ExistAuthor"] = authorResponse.Message;
                 return RedirectToAction("AddBook");
             }
 
-            await _iLibraryService.Add(newBookDto);
-            TempData["AddBook"] = "کتاب با موفقیت ثبت شد";
+            var checkExistBookResponse = await _iLibraryService.CheckThereSameBook(bookName, authorName);
+
+            if (checkExistBookResponse.Data == true)
+            {
+                TempData["ExistBook"] =checkExistBookResponse.Message;
+                return RedirectToAction("AddBook");
+            }
+
+            var result = await _iLibraryService.Add(newBookDto);
+            TempData["AddBook"] = result.Message;
 
             return RedirectToAction("AddBook");
         }

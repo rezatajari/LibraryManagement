@@ -23,13 +23,23 @@ namespace LibraryManagement.Service
             _mapper = mapper;
         }
 
-        public async Task Add(AddBookDto book)
+        public async Task<MessageContract> Add(AddBookDto book)
         {
+
+            MessageContract response = null;
             try
             {
                 var newBook = _mapper.Map<Book>(book);
                 await _libraryDatabase.Books.AddAsync(newBook);
                 await _libraryDatabase.SaveChangesAsync();
+
+                response = new MessageContract
+                {
+                    IsSuccess = true,
+                    Message = "کتاب با موفقیت ثبت گردید"
+                };
+
+                return response;
             }
             catch (Exception error)
             {
@@ -122,19 +132,42 @@ namespace LibraryManagement.Service
             await _libraryDatabase.SaveChangesAsync();
         }
 
-        public async Task<bool> CheckThereSameBook(string bookName, string authorName)
+        public async Task<MessageContract<bool>> CheckThereSameBook(string bookName, string authorName)
         {
-            var bName = await _libraryDatabase.Books.Include(a => a.Author).Where(b => b.Name == bookName).ToListAsync();
+            MessageContract<bool> response = null;
 
-            if (bName.Count == 0)
-                return false;
+            try
+            {
+                var bName = await _libraryDatabase.Books.Include(a => a.Author).Where(b => b.Name == bookName).ToListAsync();
+                var aName = bName.Where(a => a.Author.Name == authorName).ToList();
 
-            var aName = bName.Where(a => a.Author.Name == authorName).ToList();
+                if (bName.Count != 0 && aName.Count != 0)
+                {
+                    response = new MessageContract<bool>()
+                    {
+                        IsSuccess = false,
+                        Data = true,
+                        Message = "چنین کتابی قبلا ثبت شده است"
+                    };
+                }
+                else
+                {
+                    response = new MessageContract<bool>()
+                    {
+                        IsSuccess = true,
+                        Data = false
+                    };
+                }
 
-            if (aName.Count == 0)
-                return false;
+                return response;
+            }
+            catch (Exception er)
+            {
 
-            return true;
+                throw new Exception(er.Message);
+            }
+
+
         }
 
         public async Task<BookListDto> SearchByName(string bookName)
@@ -148,17 +181,34 @@ namespace LibraryManagement.Service
             return bookDto;
         }
 
-        public async Task<string> GetAuthorNameById(int AuthorId)
+        public async Task<MessageContract<string>> GetAuthorNameById(int AuthorId)
         {
+            MessageContract<string> response = null;
             try
             {
                 var author = await _libraryDatabase.Authors.SingleOrDefaultAsync(i => i.Id == AuthorId);
+                if (author != null)
+                {
+                    response = new MessageContract<string>
+                    {
+                        IsSuccess = true,
+                        Data = author.Name,
+                    };
+                }
+                else
+                {
+                    response = new MessageContract<string>
+                    {
+                        IsSuccess = false,
+                        Message = "همچین نام نویسنده ای نداریم"
+                    };
+                }
 
-                return author.Name;
+                return response;
             }
             catch (Exception)
             {
-                throw new ArgumentNullException("همچین نام نویسنده ای نداریم");
+                throw new ArgumentNullException("نداریم");
             }
         }
 

@@ -7,7 +7,7 @@ namespace LibraryManagement.Service
 {
     public interface ILibraryService
     {
-        Task Add(AddBookDto book);
+        Task<MessageContract> Add(AddBookDto book);
 
         Task Delete(int bookId);
 
@@ -17,13 +17,13 @@ namespace LibraryManagement.Service
 
         Task<BookDetailDto> GetBookById(int id);
 
-        Task<bool> CheckThereSameBook(string bookName, string authorName);
+        Task<MessageContract<bool>> CheckThereSameBook(string bookName, string authorName);
 
         Task<BookListDto> SearchByName(string bookName);
 
         Task<MessageContract<List<AuthorView>>> GetAuthorList();
 
-        Task<string> GetAuthorNameById(int AuthorId);
+        Task<MessageContract<string>> GetAuthorNameById(int AuthorId);
 
         Task<bool> CheckAuthorExistByName(string AuthorName);
 

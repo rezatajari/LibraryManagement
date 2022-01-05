@@ -23,8 +23,8 @@
             <select class="form-control" asp-for="AuthorId" asp-items="@(new SelectList(authorList.Data,"Id","Name"))">
                 <option>لطفا نام نویسنده را انتخاب کنید</option>
             </select>
+            <span asp-validation-for="AuthorId" class="text-danger"></span>
         }
-        <span asp-validation-for="AuthorId" class="text-danger"></span>
     </div>
     <div class="form-group col">
         <a asp-action="AddAuthor" class="w-100 btn btn-outline-success">اضافه کردن نویسنده</a>
@@ -49,5 +49,27 @@
         {
             <h3 class="text-center mt-3 text-danger">@error</h3>
         }
+    }
+
+    @if (TempData["AddBook"] != null)
+    {
+        var message = TempData["AddBook"];
+        <h3 class="text-center mt-3 text-success">@message</h3>
+
+    }
+
+    @if (TempData["ExistAuthor"] != null)
+    {
+
+        var message = TempData["ExistAuthor"];
+        <h3 class="text-center mt-3 text-warning">@message</h3>
+    }
+
+    @if (TempData["ExistBook"] != null)
+    {
+
+        var message = TempData["ExistBook"];
+        <h3 class="text-center mt-3 text-warning">@message</h3>
+
     }
 </div>
