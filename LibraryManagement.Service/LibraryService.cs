@@ -47,15 +47,33 @@ namespace LibraryManagement.Service
             }
         }
 
-        public async Task<bool> CheckBookExistById(int id)
+        public async Task<MessageContract<bool>> CheckBookExistById(int id)
         {
+
+            MessageContract<bool> response = null;
             try
             {
-                var getBook = await _libraryDatabase.Books.SingleOrDefaultAsync(i => i.Id == id);
+                Book getBook = await _libraryDatabase.Books.SingleOrDefaultAsync(i => i.Id == id);
 
                 if (getBook == null)
-                    return false;
-                return true;
+                {
+                    response = new MessageContract<bool>()
+                    {
+                        IsSuccess = false,
+                        Data = false,
+                        Message = "همچین کتابی موجود نمی باشد"
+                    };
+                }
+                else
+                {
+                    response = new MessageContract<bool>()
+                    {
+                        IsSuccess = true,
+                        Data = true,
+                    };
+                }
+
+                return response;
             }
             catch (Exception error)
             {
@@ -66,7 +84,7 @@ namespace LibraryManagement.Service
         public async Task<MessageContract<List<AuthorView>>> GetAuthorList()
         {
 
-            var data = new List<AuthorView>();
+            List<AuthorView> data = new List<AuthorView>();
             MessageContract<List<AuthorView>> response = null;
 
             try
@@ -100,36 +118,115 @@ namespace LibraryManagement.Service
 
         }
 
-        public async Task<BookDetailDto> GetBookById(int id)
+        public async Task<MessageContract<BookDetailDto>> GetBookById(int id)
         {
-            var getBook = await _libraryDatabase.Books.Include(a => a.Author).SingleOrDefaultAsync(i => i.Id == id);
-            var bookDetail = _mapper.Map<BookDetailDto>(getBook);
 
-            return bookDetail;
-        }
-
-        public async Task<List<BookListDto>> GetBookList()
-        {
-            var bookList = await _libraryDatabase.Books.ToListAsync();
-
-            if (bookList == null)
-                throw new ArgumentNullException();
-
-            var bookListDto = new List<BookListDto>();
-            foreach (var book in bookList)
+            BookDetailDto data = new BookDetailDto();
+            MessageContract<BookDetailDto> response = null;
+            try
             {
-                bookListDto.Add(_mapper.Map<BookListDto>(book));
+                Book getBook = await _libraryDatabase.Books.Include(a => a.Author).SingleOrDefaultAsync(i => i.Id == id);
+
+                if (getBook != null)
+                {
+                    data = _mapper.Map<BookDetailDto>(getBook);
+                    response = new MessageContract<BookDetailDto>()
+                    {
+                        IsSuccess = true,
+                        Data = data
+                    };
+                }
+                else
+                {
+                    response = new MessageContract<BookDetailDto>()
+                    {
+                        IsSuccess = false,
+                        Message = "چنین کتابی موجود نمی باشد"
+                    };
+                }
+
+                return response;
+            }
+            catch (Exception err)
+            {
+
+                throw new Exception(err.Message);
             }
 
-            return bookListDto;
+
         }
 
-        public async Task Delete(int bookId)
+        public async Task<MessageContract<List<BookListDto>>> GetBookList()
         {
-            Book book = await _libraryDatabase.Books.SingleOrDefaultAsync(b => b.Id == bookId);
+            List<BookListDto> data = new List<BookListDto>();
+            MessageContract<List<BookListDto>> response = null;
 
-            _libraryDatabase.Books.Remove(book);
-            await _libraryDatabase.SaveChangesAsync();
+            try
+            {
+                List<Book> bookList = await _libraryDatabase.Books.ToListAsync();
+
+                if (bookList != null)
+                {
+                    foreach (var book in bookList)
+                    {
+                        data.Add(_mapper.Map<BookListDto>(book));
+                    }
+
+                    response = new MessageContract<List<BookListDto>>()
+                    {
+                        IsSuccess = true,
+                        Data = data
+                    };
+                }
+                else
+                {
+                    response = new MessageContract<List<BookListDto>>()
+                    {
+                        IsSuccess = false,
+                        Message = "لیست کتابی موجود نمی باشد"
+                    };
+                }
+
+                return response;
+            }
+            catch (Exception err)
+            {
+                throw new Exception(err.Message);
+            }
+        }
+
+        public async Task<MessageContract> Delete(int bookId)
+        {
+            MessageContract response = null;
+            try
+            {
+                Book book = await _libraryDatabase.Books.SingleOrDefaultAsync(b => b.Id == bookId);
+                if (book != null)
+                {
+                    _libraryDatabase.Books.Remove(book);
+                    await _libraryDatabase.SaveChangesAsync();
+                    response = new MessageContract()
+                    {
+                        IsSuccess = true,
+                        Message = "کتاب با موفقیت حذف گردید"
+                    };
+                }
+                else
+                {
+                    response = new MessageContract()
+                    {
+                        IsSuccess = false,
+                        Message = "چنین کتابی در کتابخانه موجود نمی باشد"
+                    };
+                }
+
+                return response;
+            }
+            catch (Exception err)
+            {
+                throw new Exception(err.Message);
+            }
+
         }
 
         public async Task<MessageContract<bool>> CheckThereSameBook(string bookName, string authorName)
@@ -170,15 +267,40 @@ namespace LibraryManagement.Service
 
         }
 
-        public async Task<BookListDto> SearchByName(string bookName)
+        public async Task<MessageContract<BookListDto>> SearchByName(string bookName)
         {
-            var book = await _libraryDatabase.Books.SingleOrDefaultAsync(n => n.Name == bookName);
+            BookListDto data = new BookListDto();
+            MessageContract<BookListDto> response = null;
 
-            if (book == null)
-                throw new ArgumentNullException();
-            var bookDto = _mapper.Map<BookListDto>(book);
+            try
+            {
+                Book book = await _libraryDatabase.Books.SingleOrDefaultAsync(n => n.Name == bookName);
+                if (book != null)
+                {
+                    data = _mapper.Map<BookListDto>(book);
+                    response = new MessageContract<BookListDto>()
+                    {
+                        IsSuccess = true,
+                        Data = data,
+                        Message = "کتاب شما پیدا شد"
+                    };
+                }
+                else
+                {
+                    response = new MessageContract<BookListDto>()
+                    {
+                        IsSuccess = false,
+                        Message = "همچین کتابی موجود نمی باشد"
+                    };
+                }
 
-            return bookDto;
+                return response;
+            }
+            catch (Exception err)
+            {
+
+                throw new Exception(err.Message);
+            }
         }
 
         public async Task<MessageContract<string>> GetAuthorNameById(int AuthorId)
@@ -186,7 +308,7 @@ namespace LibraryManagement.Service
             MessageContract<string> response = null;
             try
             {
-                var author = await _libraryDatabase.Authors.SingleOrDefaultAsync(i => i.Id == AuthorId);
+                Author author = await _libraryDatabase.Authors.SingleOrDefaultAsync(i => i.Id == AuthorId);
                 if (author != null)
                 {
                     response = new MessageContract<string>
@@ -212,57 +334,155 @@ namespace LibraryManagement.Service
             }
         }
 
-        public async Task<bool> CheckAuthorExistByName(string AuthorName)
+        public async Task<MessageContract<bool>> CheckAuthorExistByName(string AuthorName)
         {
-            var aName = await _libraryDatabase.Authors.FirstOrDefaultAsync(n => n.Name == AuthorName);
+            MessageContract<bool> response = null;
+            try
+            {
+                Author author = await _libraryDatabase.Authors.FirstOrDefaultAsync(n => n.Name == AuthorName);
 
-            if (aName != null)
-                return true;
-            return false;
+                if (author != null)
+                {
+                    response = new MessageContract<bool>()
+                    {
+                        IsSuccess = true,
+                        Data = true
+                    };
+                }
+                else
+                {
+                    response = new MessageContract<bool>()
+                    {
+                        IsSuccess = false,
+                        Data = false,
+                        Message = "همچین نویسنده ای با این نام موجود نمی باشد"
+                    };
+                }
+
+                return response;
+            }
+            catch (Exception err)
+            {
+
+                throw new Exception(err.Message);
+            }
         }
 
-        public async Task AddAuthor(AddAuthorDto newAuthorDto)
+        public async Task<MessageContract> AddAuthor(AddAuthorDto newAuthorDto)
         {
-            var newAuthor = _mapper.Map<Author>(newAuthorDto);
+            MessageContract response = null;
 
             try
             {
+                var newAuthor = _mapper.Map<Author>(newAuthorDto);
                 await _libraryDatabase.Authors.AddAsync(newAuthor);
                 await _libraryDatabase.SaveChangesAsync();
+
+                response = new MessageContract()
+                {
+                    IsSuccess = true,
+                    Message = "نویسنده با موفقیت ثبت گردید"
+                };
+
+                return response;
             }
             catch (Exception error)
             {
-
                 throw new Exception(error.Message);
             }
         }
 
-        public async Task DeleteAuthor(int Id)
+        public async Task<MessageContract> DeleteAuthor(int Id)
         {
-            Author author = await _libraryDatabase.Authors.SingleOrDefaultAsync(a => a.Id == Id);
+            MessageContract response = null;
 
-            _libraryDatabase.Authors.Remove(author);
-            await _libraryDatabase.SaveChangesAsync();
+            try
+            {
+                Author author = await _libraryDatabase.Authors.SingleOrDefaultAsync(a => a.Id == Id);
+                _libraryDatabase.Authors.Remove(author);
+                await _libraryDatabase.SaveChangesAsync();
+                response = new MessageContract()
+                {
+                    IsSuccess = true,
+                    Message = "نویسنده به درستی حذف گردید"
+                };
+            }
+            catch (Exception err)
+            {
+                throw new Exception(err.Message);
+            }
+
+            return response;
         }
 
-        public async Task<bool> CheckAuthorExistById(int id)
+        public async Task<MessageContract<bool>> CheckAuthorExistById(int id)
         {
-            Author author = await _libraryDatabase.Authors.SingleOrDefaultAsync(i => i.Id == id);
+            MessageContract<bool> response = null;
 
-            if (author == null)
-                return false;
+            try
+            {
+                Author author = await _libraryDatabase.Authors.SingleOrDefaultAsync(i => i.Id == id);
 
-            return true;
+                if (author != null)
+                {
+                    response = new MessageContract<bool>()
+                    {
+                        IsSuccess = true,
+                        Data = true
+                    };
+                }
+                else
+                {
+                    response = new MessageContract<bool>()
+                    {
+                        IsSuccess = false,
+                        Data = false,
+                        Message = "همچین نویسنده ای وجود ندارد"
+                    };
+                }
+
+                return response;
+            }
+            catch (Exception err)
+            {
+                throw new Exception(err.Message);
+            }
         }
 
-        public async Task<AuthorDetailDto> GetAuthorById(int id)
+        public async Task<MessageContract<AuthorDetailDto>> GetAuthorById(int id)
         {
-            Author author = await _libraryDatabase.Authors.Include(b => b.Books).SingleOrDefaultAsync(i => i.Id == id);
+            AuthorDetailDto data = new AuthorDetailDto();
+            MessageContract<AuthorDetailDto> response = null;
 
-            AuthorDetailDto authorDetailDto = _mapper.Map<AuthorDetailDto>(author);
-            authorDetailDto.BookCount = author.Books.Count;
+            try
+            {
+                Author author = await _libraryDatabase.Authors.Include(b => b.Books).SingleOrDefaultAsync(i => i.Id == id);
+                if (author != null)
+                {
+                    data = _mapper.Map<AuthorDetailDto>(author);
+                    data.BookCount = author.Books.Count;
 
-            return authorDetailDto;
+                    response = new MessageContract<AuthorDetailDto>()
+                    {
+                        IsSuccess = true,
+                        Data = data
+                    };
+                }
+                else
+                {
+                    response = new MessageContract<AuthorDetailDto>()
+                    {
+                        IsSuccess = false,
+                        Message = "چنین نویسنده ای موجود نمی باشد"
+                    };
+                }
+
+                return response;
+            }
+            catch (Exception err)
+            {
+                throw new Exception(err.Message);
+            }
         }
     }
 }
