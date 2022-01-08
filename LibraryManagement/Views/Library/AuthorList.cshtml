@@ -43,4 +43,9 @@
     {
         <h3 class="text-center mt-3 text-danger">@TempData["DeleteAuthor"]</h3>
     }
+
+    @if (TempData["NotAuthorListExist"] != null)
+    {
+        <h3 class="text-center mt-3 text-danger">@TempData["NotAuthorListExist"]</h3>
+    }
 </div>

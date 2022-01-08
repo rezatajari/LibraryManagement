@@ -56,6 +56,7 @@ namespace LibraryManagement.Web.Controllers
             if (newBookDto == null)
                 throw new ArgumentNullException();
 
+            // گرفتن اسم نویسنده بوسیله آیدی دریافتی از ویو
             var authorResponse = await _iLibraryService.GetAuthorNameById(newBookDto.AuthorId);
             string authorName = authorResponse.Data;
             string bookName = newBookDto.BookName;
@@ -66,28 +67,36 @@ namespace LibraryManagement.Web.Controllers
                 return RedirectToAction("AddBook");
             }
 
-            var checkExistBookResponse = await _iLibraryService.CheckThereSameBook(bookName, authorName);
+            MessageContract<bool> checkExistBookResponse = await _iLibraryService.CheckThereSameBook(bookName, authorName);
 
             if (checkExistBookResponse.Data == true)
             {
-                TempData["ExistBook"] =checkExistBookResponse.Message;
+                TempData["ExistBook"] = checkExistBookResponse.Message;
                 return RedirectToAction("AddBook");
             }
 
-            var result = await _iLibraryService.Add(newBookDto);
-            TempData["AddBook"] = result.Message;
+            MessageContract resultAddBook = await _iLibraryService.Add(newBookDto);
+            TempData["AddBook"] = resultAddBook.Message;
 
             return RedirectToAction("AddBook");
         }
 
+        /// <summary>
+        /// صفحه نمایش اضافه کردن نویسنده 
+        /// </summary>
+        /// <returns></returns>
         [Route("Library/AddAuthor")]
         [HttpGet]
         public IActionResult AddAuthor()
         {
-            var newAuthor = new AddAuthorDto();
-            return View(newAuthor);
+            return View();
         }
 
+        /// <summary>
+        /// اضافه کردن نویشنده
+        /// </summary>
+        /// <param name="newAuthorDto"></param>
+        /// <returns></returns>
         [Route("Library/AddAuthor")]
         [HttpPost]
         public async Task<IActionResult> AddAuthor(AddAuthorDto newAuthorDto)
@@ -96,18 +105,24 @@ namespace LibraryManagement.Web.Controllers
             if (!ModelState.IsValid)
                 return View();
 
-            bool checkExistAuthorName = await _iLibraryService.CheckAuthorExistByName(newAuthorDto.Name);
+            MessageContract<bool> resultCheckAuthorExist = await _iLibraryService.CheckAuthorExistByName(newAuthorDto.Name);
 
-            if (checkExistAuthorName == true)
+            if (resultCheckAuthorExist.Data == true)
             {
-                TempData["ExistAuthor"] = "این نویسنده قبلا ثبت شده است";
+                TempData["ExistAuthor"] = resultCheckAuthorExist.Message;
                 return RedirectToAction("AddAuthor");
             }
 
-            await _iLibraryService.AddAuthor(newAuthorDto);
-            TempData["AddAuthor"] = "نویسنده با موفقیت ثبت شد";
+            MessageContract resultAddAuthor = await _iLibraryService.AddAuthor(newAuthorDto);
 
-            return RedirectToAction("AddAuthor");
+            if (resultAddAuthor.IsSuccess)
+            {
+
+                TempData["AddAuthor"] = resultAddAuthor.Message;
+                return RedirectToAction("AddAuthor");
+            }
+
+            return View();
 
         }
 
@@ -119,9 +134,9 @@ namespace LibraryManagement.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> BookList()
         {
-            var bookList = await _iLibraryService.GetBookList();
+            MessageContract<List<BookListDto>> resultBookList = await _iLibraryService.GetBookList();
 
-            return View(bookList);
+            return View(resultBookList.Data);
         }
 
         /// <summary>
@@ -132,17 +147,17 @@ namespace LibraryManagement.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> BookDetail(int id)
         {
-            bool checkBookExist = await _iLibraryService.CheckBookExistById(id);
+            MessageContract<bool> resultCheckBookExist = await _iLibraryService.CheckBookExistById(id);
 
-            if (checkBookExist == false)
+            if (resultCheckBookExist.Data == false)
             {
-                TempData["BookNotExist"] = "این کتاب موجود نمیباشد";
+                TempData["BookNotExist"] = resultCheckBookExist.Message;
                 return View();
             }
 
-            var book = await _iLibraryService.GetBookById(id);
+            MessageContract<BookDetailDto> resultBookDetail = await _iLibraryService.GetBookById(id);
 
-            return View(book);
+            return View(resultBookDetail.Data);
         }
 
         /// <summary>
@@ -155,19 +170,35 @@ namespace LibraryManagement.Web.Controllers
         public async Task<IActionResult> DeleteBook(int Id)
         {
 
-            await _iLibraryService.Delete(Id);
-            TempData["DeleteBook"] = "کتاب با موفقیت حذف شد";
+            MessageContract resultDeleteBook = await _iLibraryService.Delete(Id);
+            TempData["DeleteBook"] = resultDeleteBook.Message;
 
             return RedirectToAction("BookList");
         }
 
+        /// <summary>
+        /// صفحه نمایش جستجو کردن
+        /// </summary>
+        /// <returns></returns>
         [Route("Library/Search")]
         [HttpGet]
-        public IActionResult Search()
+        public IActionResult Search(MessageContract<BookListDto> messageContract)
         {
-            return View();
+            if (messageContract.IsSuccess == false && messageContract.Message != null)
+            {
+                messageContract = new MessageContract<BookListDto>();
+                return View(messageContract);
+            }
+
+            return View(messageContract);
+
         }
 
+        /// <summary>
+        /// جستجو کردن
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         [Route("Library/Search")]
         [HttpPost]
         public async Task<IActionResult> Search(string name)
@@ -178,44 +209,72 @@ namespace LibraryManagement.Web.Controllers
                 return RedirectToAction();
             }
 
-            var book = await _iLibraryService.SearchByName(name);
-            TempData["Searched"] = "Done";
-            return View("Search", book);
+            MessageContract<BookListDto> resultSearch = await _iLibraryService.SearchByName(name);
+
+            if (resultSearch.IsSuccess)
+                return View("Search", resultSearch);
+
+            return View(resultSearch);
         }
 
+        /// <summary>
+        /// نمایش کلیه نویسنده ها
+        /// </summary>
+        /// <returns></returns>
         [Route("Library/AuthorList")]
         [HttpGet]
         public async Task<IActionResult> AuthorList()
         {
-            var authors = await _iLibraryService.GetAuthorList();
-            return View(authors);
+            MessageContract<List<AuthorView>> resultAuthorView = await _iLibraryService.GetAuthorList();
+
+            if (resultAuthorView.IsSuccess)
+                return View(resultAuthorView.Data);
+
+            TempData["NotAuthorListExist"] = resultAuthorView.Message;
+            return View();
+
         }
 
+        /// <summary>
+        /// حذف کردن نویسنده
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
         [Route("Library/DeleteAuthor/{Id}")]
         [HttpGet]
         public async Task<IActionResult> DeleteAuthor(int Id)
         {
-            await _iLibraryService.DeleteAuthor(Id);
-            TempData["DeleteAuthor"] = "نویسنده با موفقیت حذف شد";
+            MessageContract resultDeleteAuthor = await _iLibraryService.DeleteAuthor(Id);
+
+            if (resultDeleteAuthor.IsSuccess)
+                TempData["DeleteAuthor"] = resultDeleteAuthor.Message;
 
             return RedirectToAction("AuthorList");
         }
 
+        /// <summary>
+        /// جزئییات نویسنده
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
         [Route("Library/AuthorDetail/{id}")]
         [HttpGet]
         public async Task<IActionResult> AuthorDetail(int Id)
         {
-            bool checkAuthorExist = await _iLibraryService.CheckAuthorExistById(Id);
+            MessageContract<bool> resultAuthorExist = await _iLibraryService.CheckAuthorExistById(Id);
 
-            if (checkAuthorExist == false)
+            if (resultAuthorExist.IsSuccess == false)
             {
-                TempData["AuthorNotExist"] = "این نویسنده موجود نمی باشد";
+                TempData["AuthorNotExist"] = resultAuthorExist.Message;
                 return View();
             }
 
-            AuthorDetailDto authorDetailDto = await _iLibraryService.GetAuthorById(Id);
+            MessageContract<AuthorDetailDto> resultAuthorDetail = await _iLibraryService.GetAuthorById(Id);
+            if (resultAuthorDetail.IsSuccess)
+                return View(resultAuthorExist.Data);
 
-            return View(authorDetailDto);
+            TempData["AuthorNotExist"] = resultAuthorDetail.Message;
+            return View();
         }
     }
 

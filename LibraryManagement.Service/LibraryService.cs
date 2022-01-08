@@ -95,7 +95,7 @@ namespace LibraryManagement.Service
                 {
                     response = new MessageContract<List<AuthorView>>();
                     response.IsSuccess = false;
-                    response.Errors.Add("نویسنده ای وجود ندارد");
+                    response.Message = "نویسنده ای وجود ندارد";
                 }
                 else
                 {
@@ -346,7 +346,9 @@ namespace LibraryManagement.Service
                     response = new MessageContract<bool>()
                     {
                         IsSuccess = true,
-                        Data = true
+                        Data = true,
+                        Message = "این نویسنده قبلا ثبت نام کرده است"
+
                     };
                 }
                 else
