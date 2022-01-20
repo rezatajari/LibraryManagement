@@ -182,7 +182,7 @@ namespace LibraryManagement.Web.Controllers
         /// <returns></returns>
         [Route("Library/Search")]
         [HttpGet]
-        public IActionResult Search(MessageContract<BookListDto> messageContract)
+        public IActionResult Search()
         {
             if (messageContract.IsSuccess == false && messageContract.Message != null)
             {
@@ -211,10 +211,15 @@ namespace LibraryManagement.Web.Controllers
 
             MessageContract<BookListDto> resultSearch = await _iLibraryService.SearchByName(name);
 
-            if (resultSearch.IsSuccess)
-                return View("Search", resultSearch);
 
-            return View(resultSearch);
+            if (resultSearch.IsSuccess)
+            {
+                ViewBag.SearchResult = resultSearch.Data;
+                return View("Search");
+            }
+
+            TempData["NotFound"] = resultSearch.Message;
+            return View("Search");
         }
 
         /// <summary>
