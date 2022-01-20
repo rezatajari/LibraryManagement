@@ -11,6 +11,24 @@
     {
         <h3 class="text-center mt-3 text-danger">@TempData["BookNotExist"]</h3>
     }
+
+    @if (ViewBag.BookExistErrors != null)
+    {
+        var errors = ViewBag.BookExistErrors;
+        foreach (var err in errors)
+        {
+            <h3 class="text-center mt-3 text-danger">@err</h3>
+        }
+    }
+    @if (ViewBag.BookDetailErrors != null)
+    {
+        var errors = ViewBag.BookDetailErrors;
+        foreach (var err in errors)
+        {
+            <h3 class="text-center mt-3 text-danger">@err</h3>
+        }
+    }
+
 </div>
 
 <div class="card text-center center-block w-50" style="width: 18rem;">

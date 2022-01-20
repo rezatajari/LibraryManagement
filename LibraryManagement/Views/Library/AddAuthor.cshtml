@@ -32,6 +32,26 @@
             </div>
         </form>
         <div>
+            @if (ViewBag.AuthorExistErrors != null)
+            {
+                var error = ViewBag.AuthorExistErrors;
+
+                foreach (var err in error)
+                {
+                    <h3 class="text-center mt-3 text-danger">@err</h3>
+                }
+            }
+
+            @if (ViewBag.AddAuthorErrors != null)
+            {
+                var error = ViewBag.AddAuthorErrors;
+
+                foreach (var err in error)
+                {
+                    <h3 class="text-center mt-3 text-danger">@err</h3>
+                }
+            }
+            
             @if (TempData["AddAuthor"] != null)
             {
                 <h3 class="text-center mt-3 text-success">@TempData["AddAuthor"]</h3>

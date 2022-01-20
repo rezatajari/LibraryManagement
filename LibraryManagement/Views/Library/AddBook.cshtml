@@ -43,6 +43,48 @@
 </form>
 
 <div>
+    @if (ViewBag.Errors != null)
+    {
+        var error = ViewBag.Errors;
+
+        foreach (var err in error)
+        {
+            <h3 class="text-center mt-3 text-danger">@err</h3>
+        }
+    }
+
+    @if (ViewBag.AuthorListErrors != null)
+    {
+        var error = ViewBag.AuthorListErrors;
+
+        foreach (var err in error)
+        {
+            <h3 class="text-center mt-3 text-danger">@err</h3>
+        }
+    }
+
+
+    @if (ViewBag.ExistBookErrors != null)
+    {
+        var error = ViewBag.ExistBookErrors;
+
+        foreach (var err in error)
+        {
+            <h3 class="text-center mt-3 text-danger">@err</h3>
+        }
+    }
+
+    @if (ViewBag.AuthorNameErrors != null)
+    {
+        var error = ViewBag.AuthorNameErrors;
+
+        foreach (var err in error)
+        {
+            <h3 class="text-center mt-3 text-danger">@err</h3>
+        }
+    }
+    
+
     @if (authorList.IsSuccess == false)
     {
         foreach (var error in authorList.Errors)

@@ -42,4 +42,24 @@
     {
         <h3 class="text-center mt-3 text-danger">@TempData["DeleteBook"]</h3>
     }
+
+    @if (ViewBag.BookListErros != null)
+    {
+        var error = ViewBag.BookListErros;
+
+        foreach (var err in error)
+        {
+            <h3 class="text-center mt-3 text-danger">@err</h3>
+        }
+    }
+
+    @if (ViewBag.DelBookErrors != null)
+    {
+        var error = ViewBag.DelBookErrors;
+
+        foreach (var err in error)
+        {
+            <h3 class="text-center mt-3 text-danger">@err</h3>
+        }
+    }
 </div>

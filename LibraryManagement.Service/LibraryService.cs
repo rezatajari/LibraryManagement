@@ -41,9 +41,22 @@ namespace LibraryManagement.Service
 
                 return response;
             }
-            catch (Exception error)
+            catch (Exception ex)
             {
-                throw new Exception(error.Message);
+                response = new MessageContract()
+                {
+                    IsSuccess = false
+                };
+
+                if (ex is ArgumentNullException)
+                {
+                    response.Errors.Add("فیلد خالی فرستادید");
+                    return response;
+                }
+
+
+                response.Errors.Add("خطای نا مشخص داریم");
+                return response;
             }
         }
 
@@ -75,9 +88,15 @@ namespace LibraryManagement.Service
 
                 return response;
             }
-            catch (Exception error)
+            catch (Exception ex)
             {
-                throw new Exception(error.Message);
+                response = new MessageContract<bool>()
+                {
+                    IsSuccess = false
+                };
+
+                response.Errors.Add("خطای ناشناخته");
+                return response;
             }
         }
 
@@ -111,9 +130,15 @@ namespace LibraryManagement.Service
 
                 return response;
             }
-            catch (Exception er)
+            catch (Exception ex)
             {
-                throw new Exception(er.Message);
+                response = new MessageContract<List<AuthorView>>()
+                {
+                    IsSuccess = false
+                };
+
+                response.Errors.Add("خطای ناشناخته");
+                return response;
             }
 
         }
@@ -147,13 +172,16 @@ namespace LibraryManagement.Service
 
                 return response;
             }
-            catch (Exception err)
+            catch (Exception ex)
             {
+                response = new MessageContract<BookDetailDto>()
+                {
+                    IsSuccess = false
+                };
 
-                throw new Exception(err.Message);
+                response.Errors.Add("خطای ناشناخته");
+                return response;
             }
-
-
         }
 
         public async Task<MessageContract<List<BookListDto>>> GetBookList()
@@ -189,9 +217,16 @@ namespace LibraryManagement.Service
 
                 return response;
             }
-            catch (Exception err)
+            catch (Exception ex)
             {
-                throw new Exception(err.Message);
+                response = new MessageContract<List<BookListDto>>()
+                {
+                    IsSuccess = false
+                };
+
+                response.Errors.Add("خطای ناشناخته");
+
+                return response;
             }
         }
 
@@ -222,17 +257,21 @@ namespace LibraryManagement.Service
 
                 return response;
             }
-            catch (Exception err)
+            catch (Exception ex)
             {
-                throw new Exception(err.Message);
-            }
+                response = new MessageContract()
+                {
+                    IsSuccess = false
+                };
 
+                response.Errors.Add("خطای ناشناخته");
+                return response;
+            }
         }
 
         public async Task<MessageContract<bool>> CheckThereSameBook(string bookName, string authorName)
         {
             MessageContract<bool> response = null;
-
             try
             {
                 var bName = await _libraryDatabase.Books.Include(a => a.Author).Where(b => b.Name == bookName).ToListAsync();
@@ -258,13 +297,16 @@ namespace LibraryManagement.Service
 
                 return response;
             }
-            catch (Exception er)
+            catch (Exception ex)
             {
+                response = new MessageContract<bool>()
+                {
+                    IsSuccess = false
+                };
 
-                throw new Exception(er.Message);
+                response.Errors.Add("خطای ناشناخته");
+                return response;
             }
-
-
         }
 
         public async Task<MessageContract<BookListDto>> SearchByName(string bookName)
@@ -296,10 +338,14 @@ namespace LibraryManagement.Service
 
                 return response;
             }
-            catch (Exception err)
+            catch (Exception ex)
             {
-
-                throw new Exception(err.Message);
+                response = new MessageContract<BookListDto>()
+                {
+                    IsSuccess = false
+                };
+                response.Errors.Add("خطای ناشسناخته");
+                return response;
             }
         }
 
@@ -328,9 +374,14 @@ namespace LibraryManagement.Service
 
                 return response;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new ArgumentNullException("نداریم");
+                response = new MessageContract<string>()
+                {
+                    IsSuccess = false
+                };
+                response.Errors.Add("خطای ناشناخته");
+                return response;
             }
         }
 
@@ -363,10 +414,14 @@ namespace LibraryManagement.Service
 
                 return response;
             }
-            catch (Exception err)
+            catch (Exception ex)
             {
-
-                throw new Exception(err.Message);
+                response = new MessageContract<bool>()
+                {
+                    IsSuccess = false
+                };
+                response.Errors.Add("خطای ناشناخته");
+                return response;
             }
         }
 
@@ -388,9 +443,14 @@ namespace LibraryManagement.Service
 
                 return response;
             }
-            catch (Exception error)
+            catch (Exception ex)
             {
-                throw new Exception(error.Message);
+                response = new MessageContract()
+                {
+                    IsSuccess = false
+                };
+                response.Errors.Add("خطای ناشناخته");
+                return response;
             }
         }
 
@@ -409,9 +469,14 @@ namespace LibraryManagement.Service
                     Message = "نویسنده به درستی حذف گردید"
                 };
             }
-            catch (Exception err)
+            catch (Exception ex)
             {
-                throw new Exception(err.Message);
+                response = new MessageContract()
+                {
+                    IsSuccess = false
+                };
+                response.Errors.Add("خطای ناشناخته");
+                return response;
             }
 
             return response;
@@ -445,9 +510,14 @@ namespace LibraryManagement.Service
 
                 return response;
             }
-            catch (Exception err)
+            catch (Exception ex)
             {
-                throw new Exception(err.Message);
+                response = new MessageContract<bool>()
+                {
+                    IsSuccess = false
+                };
+                response.Errors.Add("خطای ناشناخته");
+                return response;
             }
         }
 
@@ -481,9 +551,14 @@ namespace LibraryManagement.Service
 
                 return response;
             }
-            catch (Exception err)
+            catch (Exception ex)
             {
-                throw new Exception(err.Message);
+                response = new MessageContract<AuthorDetailDto>()
+                {
+                    IsSuccess = false
+                };
+                response.Errors.Add("خطای ناشناخته");
+                return response;
             }
         }
     }

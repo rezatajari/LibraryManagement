@@ -23,6 +23,16 @@
 <hr />
 
 <div>
+    @if (ViewBag.SearchErrors != null)
+    {
+        var error = ViewBag.SearchErrors;
+
+        foreach (var err in error)
+        {
+            <h3 class="text-center mt-3 text-danger">@err</h3>
+        }
+    }
+
     @if (ViewBag.SearchResult != null)
     {
         var searchResult = ViewBag.SearchResult;
