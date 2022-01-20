@@ -28,7 +28,7 @@ namespace LibraryManagement
             services.AddControllersWithViews();
 
             services.AddDbContext<LibraryDatabase>(
-                opt => opt.UseSqlServer(@"Server=DESKTOP-TF0M2OI;Database=LibraryDatabase;Trusted_Connection=True;"));
+                opt => opt.UseSqlServer(@"Server=DESKTOP-0TQ1Q1B;Database=LibraryDatabase;Trusted_Connection=True;"));
 
             services.AddTransient<ILibraryService, LibraryService>();
 
