@@ -184,13 +184,7 @@ namespace LibraryManagement.Web.Controllers
         [HttpGet]
         public IActionResult Search()
         {
-            if (messageContract.IsSuccess == false && messageContract.Message != null)
-            {
-                messageContract = new MessageContract<BookListDto>();
-                return View(messageContract);
-            }
-
-            return View(messageContract);
+            return View();
 
         }
 
