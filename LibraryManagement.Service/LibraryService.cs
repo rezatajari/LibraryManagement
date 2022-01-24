@@ -137,7 +137,7 @@ namespace LibraryManagement.Service
                     IsSuccess = false
                 };
 
-                response.Errors.Add("خطای ناشناخته");
+                response.Errors.Add(ex.Message);
                 return response;
             }
 

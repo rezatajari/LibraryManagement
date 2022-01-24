@@ -36,13 +36,14 @@ namespace LibraryManagement.Web.Controllers
         public async Task<IActionResult> AddBook()
         {
             var result = await _iLibraryService.GetAuthorList();
-            if (result.Errors != null)
+            ViewBag.AuthorList = result;
+
+            if (result.Errors.Count != 0)
             {
                 ViewBag.AuthorListErrors = result.Errors;
                 return View();
             }
 
-            ViewBag.AuthorList = result;
             return View();
         }
 
@@ -63,7 +64,7 @@ namespace LibraryManagement.Web.Controllers
 
             // گرفتن اسم نویسنده بوسیله آیدی دریافتی از ویو
             var authorResponse = await _iLibraryService.GetAuthorNameById(newBookDto.AuthorId);
-            if (authorResponse.Errors != null)
+            if (authorResponse.Errors.Count != 0)
             {
                 ViewBag.AuthorNameErrors = authorResponse.Errors;
                 return View();
@@ -127,7 +128,7 @@ namespace LibraryManagement.Web.Controllers
                 return View();
 
             MessageContract<bool> resultCheckAuthorExist = await _iLibraryService.CheckAuthorExistByName(newAuthorDto.Name);
-            if (resultCheckAuthorExist.Errors != null)
+            if (resultCheckAuthorExist.Errors.Count != 0)
             {
                 ViewBag.AuthorExistErrors = resultCheckAuthorExist.Errors;
                 return View();
@@ -140,7 +141,7 @@ namespace LibraryManagement.Web.Controllers
             }
 
             MessageContract resultAddAuthor = await _iLibraryService.AddAuthor(newAuthorDto);
-            if (resultAddAuthor.Errors != null)
+            if (resultAddAuthor.Errors.Count != 0)
             {
                 ViewBag.AddAuthorErrors = resultAddAuthor.Errors;
                 return View();
@@ -165,7 +166,7 @@ namespace LibraryManagement.Web.Controllers
         public async Task<IActionResult> BookList()
         {
             MessageContract<List<BookListDto>> resultBookList = await _iLibraryService.GetBookList();
-            if (resultBookList.Errors != null)
+            if (resultBookList.Errors.Count!= 0)
             {
                 ViewBag.BookListErros = resultBookList.Errors;
                 return View();
@@ -190,14 +191,14 @@ namespace LibraryManagement.Web.Controllers
                 return View();
             }
 
-            if (resultCheckBookExist.Errors != null)
+            if (resultCheckBookExist.Errors.Count != 0)
             {
                 ViewBag.BookExistErrors = resultCheckBookExist.Errors;
                 return View();
             }
 
             MessageContract<BookDetailDto> resultBookDetail = await _iLibraryService.GetBookById(id);
-            if (resultBookDetail.Errors != null)
+            if (resultBookDetail.Errors.Count != 0)
             {
                 ViewBag.BookDetailErrors = resultBookDetail.Errors;
                 return View();
@@ -216,7 +217,7 @@ namespace LibraryManagement.Web.Controllers
         public async Task<IActionResult> DeleteBook(int Id)
         {
             MessageContract resultDeleteBook = await _iLibraryService.Delete(Id);
-            if (resultDeleteBook.Errors != null)
+            if (resultDeleteBook.Errors.Count != 0)
             {
                 ViewBag.DelBookErrors = resultDeleteBook.Errors;
                 return RedirectToAction("BookList");
@@ -254,7 +255,7 @@ namespace LibraryManagement.Web.Controllers
             }
 
             MessageContract<BookListDto> resultSearch = await _iLibraryService.SearchByName(name);
-            if (resultSearch.Errors != null)
+            if (resultSearch.Errors.Count != 0)
             {
                 ViewBag.SearchErrors = resultSearch.Errors;
                 return View();
@@ -280,7 +281,7 @@ namespace LibraryManagement.Web.Controllers
         {
             MessageContract<List<AuthorView>> resultAuthorView = await _iLibraryService.GetAuthorList();
 
-            if (resultAuthorView.Errors != null)
+            if (resultAuthorView.Errors.Count != 0)
             {
                 ViewBag.AuthorListErrors = resultAuthorView.Errors;
                 return View();
@@ -304,7 +305,7 @@ namespace LibraryManagement.Web.Controllers
         public async Task<IActionResult> DeleteAuthor(int Id)
         {
             MessageContract resultDeleteAuthor = await _iLibraryService.DeleteAuthor(Id);
-            if (resultDeleteAuthor.Errors != null)
+            if (resultDeleteAuthor.Errors.Count != 0)
             {
                 ViewBag.DelAuthorErrors = resultDeleteAuthor.Errors;
                 return RedirectToAction("AuthorList");
@@ -326,7 +327,7 @@ namespace LibraryManagement.Web.Controllers
         public async Task<IActionResult> AuthorDetail(int Id)
         {
             MessageContract<bool> resultAuthorExist = await _iLibraryService.CheckAuthorExistById(Id);
-            if (resultAuthorExist.Errors != null)
+            if (resultAuthorExist.Errors.Count != 0)
             {
                 ViewBag.AuthorExistErrors = resultAuthorExist.Errors;
                 return View();
@@ -339,7 +340,7 @@ namespace LibraryManagement.Web.Controllers
             }
 
             MessageContract<AuthorDetailDto> resultAuthorDetail = await _iLibraryService.GetAuthorById(Id);
-            if (resultAuthorDetail.Errors != null)
+            if (resultAuthorDetail.Errors.Count != 0)
             {
                 ViewBag.AuthorDetailErrors = resultAuthorDetail.Errors;
                 return View();
