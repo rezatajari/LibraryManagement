@@ -19,7 +19,7 @@ namespace LibraryManagement.Service
 
         Task<MessageContract<bool>> CheckThereSameBook(string bookName, string authorName);
 
-        Task<MessageContract<BookListDto>> SearchByName(string bookName);
+        Task<MessageContract<List<BookListDto>>> SearchByName(string bookName);
 
         Task<MessageContract<List<AuthorView>>> GetAuthorList();
 

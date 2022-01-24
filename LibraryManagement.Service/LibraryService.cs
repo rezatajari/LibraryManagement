@@ -309,18 +309,22 @@ namespace LibraryManagement.Service
             }
         }
 
-        public async Task<MessageContract<BookListDto>> SearchByName(string bookName)
+        public async Task<MessageContract<List<BookListDto>>> SearchByName(string bookName)
         {
-            BookListDto data = new BookListDto();
-            MessageContract<BookListDto> response = null;
+            List<BookListDto> data = new List<BookListDto>();
+            MessageContract<List<BookListDto>> response = null;
 
             try
             {
-                Book book = await _libraryDatabase.Books.SingleOrDefaultAsync(n => n.Name == bookName);
-                if (book != null)
+                List<Book> books = await _libraryDatabase.Books.Where(n => n.Name == bookName).ToListAsync();
+                if (books.Count != 0)
                 {
-                    data = _mapper.Map<BookListDto>(book);
-                    response = new MessageContract<BookListDto>()
+                    foreach (var book in books)
+                    {
+                        data.Add(_mapper.Map<BookListDto>(book));
+                    }
+
+                    response = new MessageContract<List<BookListDto>>()
                     {
                         IsSuccess = true,
                         Data = data,
@@ -329,7 +333,7 @@ namespace LibraryManagement.Service
                 }
                 else
                 {
-                    response = new MessageContract<BookListDto>()
+                    response = new MessageContract<List<BookListDto>>()
                     {
                         IsSuccess = false,
                         Message = "همچین کتابی موجود نمی باشد"
@@ -340,7 +344,7 @@ namespace LibraryManagement.Service
             }
             catch (Exception ex)
             {
-                response = new MessageContract<BookListDto>()
+                response = new MessageContract<List<BookListDto>>()
                 {
                     IsSuccess = false
                 };

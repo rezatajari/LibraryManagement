@@ -80,7 +80,7 @@ namespace LibraryManagement.Web.Controllers
             }
 
             MessageContract<bool> checkExistBookResponse = await _iLibraryService.CheckThereSameBook(bookName, authorName);
-            if (checkExistBookResponse.Errors != null)
+            if (checkExistBookResponse.Errors.Count != 0)
             {
                 ViewBag.ExistBookErrors = checkExistBookResponse.Errors;
                 return View();
@@ -166,7 +166,7 @@ namespace LibraryManagement.Web.Controllers
         public async Task<IActionResult> BookList()
         {
             MessageContract<List<BookListDto>> resultBookList = await _iLibraryService.GetBookList();
-            if (resultBookList.Errors.Count!= 0)
+            if (resultBookList.Errors.Count != 0)
             {
                 ViewBag.BookListErros = resultBookList.Errors;
                 return View();
@@ -236,7 +236,6 @@ namespace LibraryManagement.Web.Controllers
         public IActionResult Search()
         {
             return View();
-
         }
 
         /// <summary>
@@ -254,7 +253,7 @@ namespace LibraryManagement.Web.Controllers
                 return RedirectToAction();
             }
 
-            MessageContract<BookListDto> resultSearch = await _iLibraryService.SearchByName(name);
+            MessageContract<List<BookListDto>> resultSearch = await _iLibraryService.SearchByName(name);
             if (resultSearch.Errors.Count != 0)
             {
                 ViewBag.SearchErrors = resultSearch.Errors;
@@ -347,7 +346,7 @@ namespace LibraryManagement.Web.Controllers
             }
 
             if (resultAuthorDetail.IsSuccess)
-                return View(resultAuthorExist.Data);
+                return View(resultAuthorDetail.Data);
 
             TempData["AuthorNotExist"] = resultAuthorDetail.Message;
             return View();
