@@ -184,7 +184,7 @@ namespace LibraryManagement.Service
             }
         }
 
-        public async Task<MessageContract<List<BookListDto>>> GetBookList()
+        public async Task<MessageContract<List<BookListDto>>> GetBookList(int pgNumber)
         {
             List<BookListDto> data = new List<BookListDto>();
             MessageContract<List<BookListDto>> response = null;
@@ -200,10 +200,17 @@ namespace LibraryManagement.Service
                         data.Add(_mapper.Map<BookListDto>(book));
                     }
 
+                    long totalBookList = bookList.Count;
+                    // pageSize defualt = 2
+                    PagedResult paged = new(pgNumber, 2, totalBookList);
+                    int exRecord = (pgNumber - 1) * 2;
+                    data = data.Skip(exRecord).Take(2).ToList();
+
                     response = new MessageContract<List<BookListDto>>()
                     {
                         IsSuccess = true,
-                        Data = data
+                        Data = data,
+                        Paged = paged
                     };
                 }
                 else
@@ -225,6 +232,7 @@ namespace LibraryManagement.Service
                 };
 
                 response.Errors.Add("خطای ناشناخته");
+
 
                 return response;
             }

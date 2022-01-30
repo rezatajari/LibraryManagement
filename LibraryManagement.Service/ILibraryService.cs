@@ -11,7 +11,7 @@ namespace LibraryManagement.Service
 
         Task<MessageContract> Delete(int bookId);
 
-        Task<MessageContract<List<BookListDto>>> GetBookList();
+        Task<MessageContract<List<BookListDto>>> GetBookList(int pgNumber);
 
         Task<MessageContract<bool>> CheckBookExistById(int id);
 

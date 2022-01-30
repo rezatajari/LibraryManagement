@@ -38,7 +38,7 @@ namespace LibraryManagement.Web.Controllers
             var result = await _iLibraryService.GetAuthorList();
             ViewBag.AuthorList = result;
 
-            if (result.Errors.Count != 0)
+            if (result.Errors != null)
             {
                 ViewBag.AuthorListErrors = result.Errors;
                 return View();
@@ -64,7 +64,7 @@ namespace LibraryManagement.Web.Controllers
 
             // گرفتن اسم نویسنده بوسیله آیدی دریافتی از ویو
             var authorResponse = await _iLibraryService.GetAuthorNameById(newBookDto.AuthorId);
-            if (authorResponse.Errors.Count != 0)
+            if (authorResponse.Errors != null)
             {
                 ViewBag.AuthorNameErrors = authorResponse.Errors;
                 return View();
@@ -80,7 +80,7 @@ namespace LibraryManagement.Web.Controllers
             }
 
             MessageContract<bool> checkExistBookResponse = await _iLibraryService.CheckThereSameBook(bookName, authorName);
-            if (checkExistBookResponse.Errors.Count != 0)
+            if (checkExistBookResponse.Errors != null)
             {
                 ViewBag.ExistBookErrors = checkExistBookResponse.Errors;
                 return View();
@@ -128,7 +128,7 @@ namespace LibraryManagement.Web.Controllers
                 return View();
 
             MessageContract<bool> resultCheckAuthorExist = await _iLibraryService.CheckAuthorExistByName(newAuthorDto.Name);
-            if (resultCheckAuthorExist.Errors.Count != 0)
+            if (resultCheckAuthorExist.Errors != null)
             {
                 ViewBag.AuthorExistErrors = resultCheckAuthorExist.Errors;
                 return View();
@@ -141,7 +141,7 @@ namespace LibraryManagement.Web.Controllers
             }
 
             MessageContract resultAddAuthor = await _iLibraryService.AddAuthor(newAuthorDto);
-            if (resultAddAuthor.Errors.Count != 0)
+            if (resultAddAuthor.Errors != null)
             {
                 ViewBag.AddAuthorErrors = resultAddAuthor.Errors;
                 return View();
@@ -163,16 +163,16 @@ namespace LibraryManagement.Web.Controllers
         /// <returns></returns>
         [Route("Library/BookList")]
         [HttpGet]
-        public async Task<IActionResult> BookList()
+        public async Task<IActionResult> BookList(int pageNumber = 1)
         {
-            MessageContract<List<BookListDto>> resultBookList = await _iLibraryService.GetBookList();
-            if (resultBookList.Errors.Count != 0)
+            MessageContract<List<BookListDto>> resultBookList = await _iLibraryService.GetBookList(pageNumber);
+            if (resultBookList.Errors != null)
             {
                 ViewBag.BookListErros = resultBookList.Errors;
                 return View();
             }
 
-            return View(resultBookList.Data);
+            return View(resultBookList);
         }
 
         /// <summary>
@@ -191,14 +191,14 @@ namespace LibraryManagement.Web.Controllers
                 return View();
             }
 
-            if (resultCheckBookExist.Errors.Count != 0)
+            if (resultCheckBookExist.Errors != null)
             {
                 ViewBag.BookExistErrors = resultCheckBookExist.Errors;
                 return View();
             }
 
             MessageContract<BookDetailDto> resultBookDetail = await _iLibraryService.GetBookById(id);
-            if (resultBookDetail.Errors.Count != 0)
+            if (resultBookDetail.Errors != null)
             {
                 ViewBag.BookDetailErrors = resultBookDetail.Errors;
                 return View();
@@ -217,7 +217,7 @@ namespace LibraryManagement.Web.Controllers
         public async Task<IActionResult> DeleteBook(int Id)
         {
             MessageContract resultDeleteBook = await _iLibraryService.Delete(Id);
-            if (resultDeleteBook.Errors.Count != 0)
+            if (resultDeleteBook.Errors != null)
             {
                 ViewBag.DelBookErrors = resultDeleteBook.Errors;
                 return RedirectToAction("BookList");
@@ -254,7 +254,7 @@ namespace LibraryManagement.Web.Controllers
             }
 
             MessageContract<List<BookListDto>> resultSearch = await _iLibraryService.SearchByName(name);
-            if (resultSearch.Errors.Count != 0)
+            if (resultSearch.Errors != null)
             {
                 ViewBag.SearchErrors = resultSearch.Errors;
                 return View();
@@ -280,7 +280,7 @@ namespace LibraryManagement.Web.Controllers
         {
             MessageContract<List<AuthorView>> resultAuthorView = await _iLibraryService.GetAuthorList();
 
-            if (resultAuthorView.Errors.Count != 0)
+            if (resultAuthorView.Errors != null)
             {
                 ViewBag.AuthorListErrors = resultAuthorView.Errors;
                 return View();
@@ -304,7 +304,7 @@ namespace LibraryManagement.Web.Controllers
         public async Task<IActionResult> DeleteAuthor(int Id)
         {
             MessageContract resultDeleteAuthor = await _iLibraryService.DeleteAuthor(Id);
-            if (resultDeleteAuthor.Errors.Count != 0)
+            if (resultDeleteAuthor.Errors != null)
             {
                 ViewBag.DelAuthorErrors = resultDeleteAuthor.Errors;
                 return RedirectToAction("AuthorList");
@@ -326,7 +326,7 @@ namespace LibraryManagement.Web.Controllers
         public async Task<IActionResult> AuthorDetail(int Id)
         {
             MessageContract<bool> resultAuthorExist = await _iLibraryService.CheckAuthorExistById(Id);
-            if (resultAuthorExist.Errors.Count != 0)
+            if (resultAuthorExist.Errors != null)
             {
                 ViewBag.AuthorExistErrors = resultAuthorExist.Errors;
                 return View();
@@ -339,7 +339,7 @@ namespace LibraryManagement.Web.Controllers
             }
 
             MessageContract<AuthorDetailDto> resultAuthorDetail = await _iLibraryService.GetAuthorById(Id);
-            if (resultAuthorDetail.Errors.Count != 0)
+            if (resultAuthorDetail.Errors != null)
             {
                 ViewBag.AuthorDetailErrors = resultAuthorDetail.Errors;
                 return View();
@@ -352,6 +352,4 @@ namespace LibraryManagement.Web.Controllers
             return View();
         }
     }
-
-    //TODO: پیجینگ برای صفحه بندی راه بندازم
 }

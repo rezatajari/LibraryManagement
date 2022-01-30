@@ -1,4 +1,4 @@
-﻿@model List<LibraryManagement.DataTransferObjects.BookListDto>
+﻿@model LibraryManagement.Service.MessageContract<List<LibraryManagement.DataTransferObjects.BookListDto>>
 @{
     ViewData["Title"] = "BookList";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -21,7 +21,7 @@
             <th>جزئیات کتاب</th>
         </tr>
     </thead>
-    @foreach (var book in Model)
+    @foreach (var book in Model.Data)
     {
         <tr>
             <td class="bookname">
@@ -35,6 +35,24 @@
             </td>
         </tr>
     }
+</table>
+
+<table>
+    <tr>
+        @for (int i = 1; i < Model.Paged.TotalPages; i++)
+        {
+            <td>
+                @if (i != Model.Paged.PageNumber)
+                {
+                    <a href="/Library/BookList?pageNumber=@i" class="btn btn-primary">@i</a>
+                }
+                else
+                {
+                    <span class="btn btn-danger">@i</span>
+                }
+            </td>
+        }
+    </tr>
 </table>
 
 <div>

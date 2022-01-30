@@ -18,7 +18,7 @@ namespace LibraryManagement.Service
             PageNumber = pageNumber;
             PageSize = pageSize;
             TotalItems = total;
-            TotalPages = (int)Math.Ceiling((double)total / PageSize);
+            TotalPages = (int)Math.Ceiling((double)total / pageSize);
         }
 
         public int PageNumber { get; set; } = 1;
