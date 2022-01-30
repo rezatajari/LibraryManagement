@@ -35,7 +35,7 @@ namespace LibraryManagement.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> AddBook()
         {
-            var result = await _iLibraryService.GetAuthorList();
+            var result = await _iLibraryService.GetAuthorList(pgNum: 1);
             ViewBag.AuthorList = result;
 
             if (result.Errors != null)
@@ -276,9 +276,9 @@ namespace LibraryManagement.Web.Controllers
         /// <returns></returns>
         [Route("Library/AuthorList")]
         [HttpGet]
-        public async Task<IActionResult> AuthorList()
+        public async Task<IActionResult> AuthorList(int pageNumber = 1)
         {
-            MessageContract<List<AuthorView>> resultAuthorView = await _iLibraryService.GetAuthorList();
+            MessageContract<List<AuthorView>> resultAuthorView = await _iLibraryService.GetAuthorList(pageNumber);
 
             if (resultAuthorView.Errors != null)
             {
@@ -287,7 +287,7 @@ namespace LibraryManagement.Web.Controllers
             }
 
             if (resultAuthorView.IsSuccess)
-                return View(resultAuthorView.Data);
+                return View(resultAuthorView);
 
             TempData["NotAuthorListExist"] = resultAuthorView.Message;
             return View();

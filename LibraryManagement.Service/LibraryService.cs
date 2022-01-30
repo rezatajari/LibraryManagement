@@ -100,7 +100,7 @@ namespace LibraryManagement.Service
             }
         }
 
-        public async Task<MessageContract<List<AuthorView>>> GetAuthorList()
+        public async Task<MessageContract<List<AuthorView>>> GetAuthorList(int pgNum)
         {
 
             List<AuthorView> data = new List<AuthorView>();
@@ -123,9 +123,17 @@ namespace LibraryManagement.Service
                         data.Add(_mapper.Map<AuthorView>(author));
                     }
 
-                    response = new MessageContract<List<AuthorView>>();
-                    response.IsSuccess = true;
-                    response.Data = data;
+                    int totalAuthorList = data.Count;
+                    PagedResult paged = new(pgNum, 3, totalAuthorList);
+                    int exRecord = (pgNum - 1) * 3;
+                    data = data.Skip(exRecord).Take(3).ToList();
+
+                    response = new MessageContract<List<AuthorView>>
+                    {
+                        IsSuccess = true,
+                        Data = data,
+                        Paged = paged
+                    };
                 }
 
                 return response;
@@ -184,7 +192,7 @@ namespace LibraryManagement.Service
             }
         }
 
-        public async Task<MessageContract<List<BookListDto>>> GetBookList(int pgNumber)
+        public async Task<MessageContract<List<BookListDto>>> GetBookList(int pgNum)
         {
             List<BookListDto> data = new List<BookListDto>();
             MessageContract<List<BookListDto>> response = null;
@@ -202,8 +210,8 @@ namespace LibraryManagement.Service
 
                     long totalBookList = bookList.Count;
                     // pageSize defualt = 2
-                    PagedResult paged = new(pgNumber, 2, totalBookList);
-                    int exRecord = (pgNumber - 1) * 2;
+                    PagedResult paged = new(pgNum, 2, totalBookList);
+                    int exRecord = (pgNum - 1) * 2;
                     data = data.Skip(exRecord).Take(2).ToList();
 
                     response = new MessageContract<List<BookListDto>>()
